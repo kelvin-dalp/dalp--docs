@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DALP Letterhead - Minimalist Premium Design</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General layout settings for A4 print */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Arial', sans-serif;
+            background-color: #ffffff;
+            color: #2D3748;
+            -webkit-print-color-adjust: exact;
+            box-sizing: border-box;
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Corporate Colors */
+        :root {
+            --navy-dark: #0C2340;
+            --blue-accent: #0093FB;
+            --text-muted: #718096;
+            --text-dark: #1A202C;
+            --line-color: #E2E8F0;
+        }
+
+        /* Asymmetric Top Accent Line (Minimalist) */
+        .top-line-bar {
+            width: 100%;
+            height: 4px;
+            display: flex;
+        }
+        .top-line-navy {
+            width: 35%;
+            background-color: var(--navy-dark);
+        }
+        .top-line-blue {
+            width: 65%;
+            background-color: var(--blue-accent);
+        }
+
+        /* Header Layout */
+        header {
+            padding: 12mm 20mm 6mm 20mm; /* Generous margins */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-main-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 6mm;
+        }
+
+        /* Logo & Brand Name */
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 5mm;
+        }
+        .logo-img {
+            width: 28mm;
+            height: 21mm;
+            object-fit: contain;
+        }
+        .brand-text {
+            border-left: 1.5px solid var(--line-color);
+            padding-left: 5mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .brand-text h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--navy-dark);
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        .brand-subtitle {
+            margin: 1mm 0 0 0;
+            font-size: 8px;
+            font-weight: 500;
+            color: var(--blue-accent);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Minimal Contact Details */
+        .contact-details {
+            text-align: right;
+            font-size: 8.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+        .contact-details p {
+            margin: 0;
+        }
+        .contact-details span {
+            color: var(--navy-dark);
+            font-weight: 500;
+        }
+        .contact-details a {
+            color: var(--navy-dark);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--navy-dark);
+        }
+        .contact-details a:hover {
+            color: var(--blue-accent);
+            border-bottom-color: var(--blue-accent);
+        }
+
+        /* Subtle Horizontal Divider */
+        .header-divider {
+            width: 100%;
+            height: 1px;
+            background-color: var(--line-color);
+        }
+
+        /* Body Content Area */
+        main {
+            flex: 1;
+            padding: 10mm 20mm;
+            font-size: 13px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+        
+        .placeholder-text {
+            color: var(--text-muted);
+            border: 1px dashed var(--line-color);
+            padding: 25mm;
+            text-align: center;
+            border-radius: 6px;
+            margin-top: 15mm;
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        /* Footer Area */
+        footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 12mm;
+            gap: 4mm;
+        }
+        
+        .footer-divider {
+            width: calc(100% - 40mm);
+            height: 1px;
+            background-color: var(--line-color);
+        }
+
+        .footer-info-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4mm;
+            font-size: 8px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-bullet {
+            color: var(--blue-accent);
+            font-size: 10px;
+        }
+        
+        .footer-info-row a {
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .footer-info-row a:hover {
+            text-decoration: underline;
+        }
+
+        /* Center Subtle Bottom Accent Bar */
+        .bottom-decor {
+            display: flex;
+            gap: 4px;
+            width: 80px;
+            height: 3px;
+            margin-top: 2mm;
+        }
+        .decor-navy {
+            flex: 1;
+            background-color: var(--navy-dark);
+            border-radius: 2px;
+        }
+        .decor-blue {
+            flex: 2;
+            background-color: var(--blue-accent);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Asymmetric top bar -->
+    <div class="top-line-bar">
+        <div class="top-line-navy"></div>
+        <div class="top-line-blue"></div>
+    </div>
+
+    <!-- Header Content -->
+    <header>
+        <div class="header-main-row">
+            <div class="brand-container">
+                <img class="logo-img" src="dalp-logo.jpg" alt="DALP Logo">
+                <div class="brand-text">
+                    <h1>EDUCATION BEYOND BORDERS</h1>
+                    <div class="brand-subtitle">Corporate Letterhead Template</div>
+                </div>
+            </div>
+            <div class="contact-details">
+                <p><span>T:</span> +260 76 416 8592</p>
+                <p><span>W:</span> <a href="http://www.dalpzambia.com" target="_blank">www.dalpzambia.com</a></p>
+                <p><span>A:</span> EDU-HUB, 2nd Floor, Omelo Mumba Road, Lusaka</p>
+            </div>
+        </div>
+        
+        <!-- Subtle Divider -->
+        <div class="header-divider"></div>
+    </header>
+
+    <!-- Document Body -->
+    <main>
+        <div class="placeholder-text">
+            [Letter Body Area - Empty for template]
+        </div>
+    </main>
+
+    <!-- Footer Content -->
+    <footer>
+        <div class="footer-divider"></div>
+        <div class="footer-info-row">
+            <span>EDU-HUB, 2nd Floor, Omelo Mumba Road, Rhodespark, Lusaka, Zambia</span>
+            <span class="footer-bullet">•</span>
+            <span>+260764168592</span>
+            <span class="footer-bullet">•</span>
+            <a href="mailto:info@dalpzambia.com">info@dalpzambia.com</a>
+        </div>
+        
+        <!-- Subtle bottom decor line -->
+        <div class="bottom-decor">
+            <div class="decor-navy"></div>
+            <div class="decor-blue"></div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "dalp-letter-generator-backend",
+  "version": "1.0.0",
+  "description": "Enterprise Node.js Express server with SQLite database for DALP Letter Generator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "better-sqlite3": "^9.6.0"
+  }
+}
