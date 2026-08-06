@@ -60,7 +60,8 @@ function loadDatabase() {
                 'sender-name': 'Dr. Patrick Nkhoma',
                 'sender-designation': 'Managing Director',
                 'currentTemplate': 'exact',
-                'includeSignature': true
+                'includeSignature': true,
+                'autoPersonalizeSalutation': true
             },
             signature: {
                 dataUrl: '',

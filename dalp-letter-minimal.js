@@ -147,7 +147,7 @@ function contactCell() {
                 spacing: { before: 0, after: 20 },
                 children: [
                     new TextRun({ text: "T: ", bold: true, size: 16, font: "Arial", color: DARK_NAVY }),
-                    new TextRun({ text: "+260 76 416 8592", size: 16, font: "Arial", color: TEXT_MUTED }),
+                    new TextRun({ text: "+260 76 416 8592 / +260 96 673 5623", size: 16, font: "Arial", color: TEXT_MUTED }),
                 ],
             }),
             new Paragraph({
@@ -197,7 +197,7 @@ function footerContent() {
             }),
             new TextRun({ text: "   •   ", size: 16, bold: true, color: LOGO_BLUE }),
             new TextRun({
-                text: "+260764168592",
+                text: "+260764168592 / +260966735623",
                 size: 15, font: "Arial", color: TEXT_MUTED
             }),
             new TextRun({ text: "   •   ", size: 16, bold: true, color: LOGO_BLUE }),

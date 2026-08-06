@@ -9,24 +9,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* General layout settings for A4 print */
         @page {
-            size: A4;
+            size: A4 portrait;
             margin: 0;
         }
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', 'Arial', sans-serif;
             background-color: #ffffff;
             color: #2D3748;
             -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
             box-sizing: border-box;
             width: 210mm;
             height: 297mm;
+            max-height: 297mm;
+            overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
         }
         
         /* Corporate Colors */
@@ -233,7 +237,7 @@
                 </div>
             </div>
             <div class="contact-details">
-                <p><span>T:</span> +260 76 416 8592</p>
+                <p><span>T:</span> +260 76 416 8592 / +260 96 673 5623</p>
                 <p><span>W:</span> <a href="http://www.dalpzambia.com" target="_blank">www.dalpzambia.com</a></p>
                 <p><span>A:</span> EDU-HUB, 2nd Floor, Omelo Mumba Road, Lusaka</p>
             </div>
@@ -256,7 +260,7 @@
         <div class="footer-info-row">
             <span>EDU-HUB, 2nd Floor, Omelo Mumba Road, Rhodespark, Lusaka, Zambia</span>
             <span class="footer-bullet">•</span>
-            <span>+260764168592</span>
+            <span>+260764168592 / +260966735623</span>
             <span class="footer-bullet">•</span>
             <a href="mailto:info@dalpzambia.com">info@dalpzambia.com</a>
         </div>

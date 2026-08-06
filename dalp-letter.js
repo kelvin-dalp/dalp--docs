@@ -153,7 +153,7 @@ function contactCell() {
                 spacing: { before: 0, after: 20 },
                 children: [
                     new TextRun({ text: "Phone: ", bold: true, size: 18, font: "Arial", color: NAVY_TEXT }),
-                    new TextRun({ text: "+260764168592", size: 18, font: "Arial" }),
+                    new TextRun({ text: "+260764168592 / +260966735623", size: 18, font: "Arial" }),
                 ],
             }),
             new Paragraph({
@@ -236,7 +236,7 @@ function footerContent() {
                                           transformation: { width: 12, height: 12 },
                                       }),
                                       new TextRun({
-                                          text: "  +260764168592",
+                                          text: "  +260764168592 / +260966735623",
                                           size: 16, font: "Arial", color: "333333"
                                       }),
                                   ],

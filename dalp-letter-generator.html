@@ -313,6 +313,7 @@
         .letter-sheet {
             width: 210mm;
             height: 297mm;
+            max-height: 297mm;
             background-color: white;
             color: #333333;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
@@ -322,18 +323,21 @@
             flex-direction: column;
             position: relative;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         /* Layout specifically for high-fidelity offline PDF rendering */
         .letter-print-container {
             width: 210mm;
             height: 297mm;
+            max-height: 297mm;
             background-color: white;
             color: #333333;
             display: flex;
             flex-direction: column;
             position: relative;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         /* Large Action Buttons */
@@ -383,9 +387,11 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            max-height: 100%;
             position: relative;
             box-sizing: border-box;
             background-color: white;
+            overflow: hidden;
         }
 
         /* --- TEMPLATE 1: EXACT --- */
@@ -475,11 +481,13 @@
         }
         .exact-body {
             flex: 1;
-            padding: 6mm 17.6mm;
-            font-size: 12px;
-            line-height: 1.45;
+            padding: 4mm 17.6mm 2mm 17.6mm;
+            font-size: 11.5px;
+            line-height: 1.38;
             color: #333333;
             font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            box-sizing: border-box;
         }
         .exact-footer {
             width: 100%;
@@ -610,12 +618,14 @@
         }
         .minimal-body {
             flex: 1;
-            padding: 6mm 20mm;
-            font-size: 11.5px;
-            line-height: 1.45;
+            padding: 4mm 20mm 2mm 20mm;
+            font-size: 11px;
+            line-height: 1.38;
             color: #2D3748;
             font-family: 'Inter', sans-serif;
             font-weight: 300;
+            overflow: hidden;
+            box-sizing: border-box;
         }
         .minimal-footer {
             width: 100%;
@@ -777,31 +787,42 @@
         }
 
         @media print {
-            body {
-                background: white;
-                color: black;
-                overflow: visible;
-                height: auto;
+            @page {
+                size: A4 portrait;
+                margin: 0;
             }
-            .sidebar, .preview-area {
+            html, body {
+                background: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                height: 100% !important;
+                max-height: 297mm !important;
+            }
+            .sidebar, .preview-area, .toast-notification, #toast-notification {
                 display: none !important;
             }
             #print-area {
                 display: block !important;
-                width: 210mm;
+                width: 210mm !important;
+                margin: 0 auto !important;
             }
-            .print-page {
-                width: 210mm;
-                height: 297mm;
-                box-sizing: border-box;
+            .print-page, .letter-sheet, .standalone-page {
+                width: 210mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
                 page-break-after: always;
-                background-color: white;
+                page-break-inside: avoid !important;
+                background-color: white !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 color-adjust: exact !important;
             }
             .print-page:last-child {
-                page-break-after: avoid;
+                page-break-after: avoid !important;
             }
             /* Ensure all colored elements print backgrounds */
             .letter-content-wrapper,
@@ -1040,8 +1061,14 @@
                 <input type="text" id="letter-subject" class="form-control" value="INVITATION TO THE DALP EDUCATION FAIR – 28 AUGUST 2026">
             </div>
             <div class="form-group">
-                <label>Salutation (Auto-Personalized per Rep)</label>
+                <label>Salutation</label>
                 <input type="text" id="letter-salutation" class="form-control" value="" placeholder="Auto-personalized per rep (e.g. Dear Linda Kwamboka Mokua,)" oninput="updatePreview()">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                    <label style="font-size: 11px; color: var(--text-light); cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0;">
+                        <input type="checkbox" id="auto-salutation-toggle" checked onchange="toggleAutoSalutation()">
+                        Auto-Personalize Salutation per Rep
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label>Letter Body (Common to all)</label>
@@ -1057,7 +1084,7 @@ Attending students will have the opportunity to engage directly with university 
 
 Complimentary refreshments will be provided for all attending pupils and accompanying staff members. Participation in the event is entirely free of charge.
 
-We kindly request that you confirm your attendance by 20 August 2026 via email or by contacting us on +260 764 168 592.
+We kindly request that you confirm your attendance by 20 August 2026 via email or by contacting us on +260 764 168 592 / +260 966 735 623.
 
 We look forward to welcoming your pupils and staff to what promises to be an informative and rewarding event.</textarea>
                 <div class="rich-editor-container">
@@ -1225,6 +1252,12 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 </svg>
                 Print All (One by One)
             </button>
+            <button class="btn btn-generate" onclick="downloadBlankLetterheadPDF()" style="background-color: #475569; box-shadow: 0 4px 14px rgba(71, 85, 105, 0.4);" title="Download a blank design template letterhead PDF for handwriting in pen">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                </svg>
+                Download Blank Letterhead (PDF)
+            </button>
         </div>
     </div>
 
@@ -1239,6 +1272,9 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 </div>
                 <button class="btn btn-primary" onclick="downloadSingleDirectPDF(currentPreviewIndex)" style="padding: 4px 10px; font-size: 11px; background-color: var(--accent-blue);" title="Directly download current letter as PDF without print dialog">
                     <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align: middle;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Download Single PDF
+                </button>
+                <button class="btn btn-secondary" onclick="printBlankLetterhead()" style="padding: 4px 10px; font-size: 11px; background-color: #334155; color: white;" title="Print a blank letterhead design to write in pen">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align: middle;"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-4 11H9v-5h6v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H7v4h10V3z"/></svg> Print Blank Design
                 </button>
             </div>
             <div style="font-size: 12px; color: var(--text-muted);" id="school-count-preview">0 Institution(s) loaded</div>
@@ -1745,6 +1781,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
         let schools = [];
         let currentPreviewIndex = 0;
         let includeSignature = true;
+        let autoPersonalizeSalutation = true;
 
         function formatToday() {
             return '28 August 2026';
@@ -2018,6 +2055,26 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             updatePreview();
         }
 
+        function toggleAutoSalutation() {
+            const toggle = document.getElementById('auto-salutation-toggle');
+            autoPersonalizeSalutation = toggle ? toggle.checked : true;
+            updateSalutationUI();
+            DALPDatabase.saveSetting('autoPersonalizeSalutation', autoPersonalizeSalutation);
+            updatePreview();
+        }
+
+        function updateSalutationUI() {
+            const toggle = document.getElementById('auto-salutation-toggle');
+            const input = document.getElementById('letter-salutation');
+            if (!toggle || !input) return;
+
+            if (toggle.checked) {
+                input.placeholder = "Auto-personalized per rep (e.g. Dear Linda Kwamboka Mokua,)";
+            } else {
+                input.placeholder = "e.g. Dear Sir/Madam, or Dear Partners,";
+            }
+        }
+
         function updateSignatureStatusDisplay(hasSig) {
             const statusElem = document.getElementById('signature-status');
             if (!statusElem) return;
@@ -2068,6 +2125,12 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                         const toggle = document.getElementById('include-signature-toggle');
                         if (toggle) toggle.checked = includeSignature;
                     }
+                    if (settings['autoPersonalizeSalutation'] !== undefined) {
+                        autoPersonalizeSalutation = settings['autoPersonalizeSalutation'];
+                        const toggle = document.getElementById('auto-salutation-toggle');
+                        if (toggle) toggle.checked = autoPersonalizeSalutation;
+                    }
+                    updateSalutationUI();
                     if (settings['currentTemplate']) {
                         currentTemplate = settings['currentTemplate'];
                         document.querySelectorAll('.template-card').forEach(card => {
@@ -2588,29 +2651,36 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 
                         // Helper: Get Personalized Salutation
         function getPersonalizedSalutation(salutationInput, school) {
-            if (school && school.contact && school.contact.trim() && school.contact.trim() !== 'The Representative') {
-                let contact = school.contact.trim();
-                if (contact.toLowerCase().startsWith('dear ')) {
-                    return contact.endsWith(',') ? contact : contact + ',';
+            if (autoPersonalizeSalutation) {
+                if (school && school.contact && school.contact.trim() && school.contact.trim() !== 'The Representative') {
+                    let contact = school.contact.trim();
+                    if (contact.toLowerCase().startsWith('dear ')) {
+                        return contact.endsWith(',') ? contact : contact + ',';
+                    }
+                    return `Dear ${contact},`;
                 }
-                return `Dear ${contact},`;
-            }
 
-            if (school && school.contact && school.contact.trim() === 'The Representative') {
+                if (school && school.contact && school.contact.trim() === 'The Representative') {
+                    return `Dear Representative,`;
+                }
+
+                if (salutationInput && salutationInput.trim() && salutationInput.trim() !== 'Dear Sir/Madam,') {
+                    return salutationInput.trim();
+                }
+
                 return `Dear Representative,`;
+            } else {
+                if (salutationInput && salutationInput.trim()) {
+                    return salutationInput.trim();
+                }
+                return `Dear Sir/Madam,`;
             }
-
-            if (salutationInput && salutationInput.trim() && salutationInput.trim() !== 'Dear Sir/Madam,') {
-                return salutationInput.trim();
-            }
-
-            return `Dear Representative,`;
         }
 
         // Render A4 letter markup
-        function renderLetterHTML(template, date, subject, salutation, body, senderName, senderDesignation, school) {
-            const addressMarkup = buildRecipientAddress(school);
-            const dynamicSalutation = getPersonalizedSalutation(salutation, school);
+        function renderLetterHTML(template, date, subject, salutation, body, senderName, senderDesignation, school, isBlank = false) {
+            const addressMarkup = isBlank ? '' : buildRecipientAddress(school);
+            const dynamicSalutation = isBlank ? '' : getPersonalizedSalutation(salutation, school);
 
             if (template === 'exact') {
                 return `
@@ -2633,7 +2703,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             <div class="exact-contact">
                                 <div class="exact-contact-line"></div>
                                 <div class="exact-contact-text">
-                                    <p><strong>Phone:</strong> +260764168592</p>
+                                    <p><strong>Phone:</strong> +260764168592 / +260966735623</p>
                                     <p><strong>Web:</strong> <u>www.dalpzambia.com</u></p>
                                     <p><strong>ADD:</strong> EDU-HUB, 2nd Floor,</p>
                                     <p style="padding-left: 26px;">Omelo Mumba Road, Lusaka</p>
@@ -2647,6 +2717,39 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                     </div>
 
                     <!-- Body -->
+                    ${isBlank ? `
+                    <div class="exact-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="letter-date" style="font-weight: bold; color: var(--print-navy);">DATE: ____________________</div>
+                            <div class="letter-recipient" style="line-height: 1.8; margin-top: 4mm;">
+                                <strong>TO: __________________________________________________</strong><br>
+                                <strong>INSTITUTION: ___________________________________________</strong><br>
+                                <strong>LOCATION / CITY: ________________________________________</strong>
+                            </div>
+                            <div class="letter-salutation" style="margin-top: 4mm;">Dear ________________________,</div>
+                            <div class="letter-subject" style="margin-top: 4mm; font-weight: bold; color: var(--print-navy);">RE: ______________________________________________________________________</div>
+                            <div class="blank-writing-lines" style="margin-top: 6mm;">
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                            </div>
+                        </div>
+                        <div class="letter-signature" style="margin-top: 6mm;">
+                            <strong>${senderName}</strong><br>
+                            ${includeSignature && currentSignatureDataURL ? `<div class="letter-sig-wrapper" style="margin: 4px 0; position: relative; display: inline-block; user-select: none;"><img src="${currentSignatureDataURL}" id="movable-signature-img" style="max-height: ${sigHeight}px; height: ${sigHeight}px; width: auto; position: relative; left: ${sigOffsetX}px; top: ${sigOffsetY}px; cursor: move; user-select: none; -webkit-user-drag: none; vertical-align: middle;" alt="Signature"><div class="sig-resize-handle" style="display:none;"></div></div><br>` : '<br><br><br>'}
+                            <strong>${senderDesignation}</strong>
+                        </div>
+                    </div>
+                    ` : `
                     <div class="exact-body">
                         <div class="letter-date">${date}</div>
                         <div class="letter-recipient">
@@ -2662,6 +2765,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             <strong>${senderDesignation}</strong>
                         </div>
                     </div>
+                    `}
 
                     <!-- Footer -->
                     <div class="exact-footer">
@@ -2672,7 +2776,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             </div>
                             <div class="exact-footer-item">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C2340" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                                <span>+260764168592</span>
+                                <span>+260764168592 / +260966735623</span>
                             </div>
                             <div class="exact-footer-item">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C2340" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -2705,7 +2809,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                                 </div>
                             </div>
                             <div class="minimal-contact">
-                                <p><span>T:</span> +260 76 416 8592</p>
+                                <p><span>T:</span> +260 76 416 8592 / +260 96 673 5623</p>
                                 <p><span>W:</span> <a href="http://www.dalpzambia.com" target="_blank">www.dalpzambia.com</a></p>
                                 <p><span>A:</span> Omelo Mumba Road, Lusaka, Zambia</p>
                             </div>
@@ -2714,6 +2818,39 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                     </div>
 
                     <!-- Body -->
+                    ${isBlank ? `
+                    <div class="minimal-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="letter-date" style="font-weight: bold; color: var(--print-navy);">DATE: ____________________</div>
+                            <div class="letter-recipient" style="line-height: 1.8; margin-top: 4mm;">
+                                <strong>TO: __________________________________________________</strong><br>
+                                <strong>INSTITUTION: ___________________________________________</strong><br>
+                                <strong>LOCATION / CITY: ________________________________________</strong>
+                            </div>
+                            <div class="letter-salutation" style="margin-top: 4mm;">Dear ________________________,</div>
+                            <div class="letter-subject" style="margin-top: 4mm; font-weight: bold; color: var(--print-navy);">RE: ______________________________________________________________________</div>
+                            <div class="blank-writing-lines" style="margin-top: 6mm;">
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                                <div style="border-bottom: 1px dashed #cbd5e1; height: 28px;"></div>
+                            </div>
+                        </div>
+                        <div class="letter-signature" style="margin-top: 6mm;">
+                            <strong>${senderName}</strong><br>
+                            ${includeSignature && currentSignatureDataURL ? `<div class="letter-sig-wrapper" style="margin: 4px 0; position: relative; display: inline-block; user-select: none;"><img src="${currentSignatureDataURL}" id="movable-signature-img" style="max-height: ${sigHeight}px; height: ${sigHeight}px; width: auto; position: relative; left: ${sigOffsetX}px; top: ${sigOffsetY}px; cursor: move; user-select: none; -webkit-user-drag: none; vertical-align: middle;" alt="Signature"><div class="sig-resize-handle" style="display:none;"></div></div><br>` : '<br><br><br>'}
+                            <strong>${senderDesignation}</strong>
+                        </div>
+                    </div>
+                    ` : `
                     <div class="minimal-body">
                         <div class="letter-date">${date}</div>
                         <div class="letter-recipient">
@@ -2729,6 +2866,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             <strong>${senderDesignation}</strong>
                         </div>
                     </div>
+                    `}
 
                     <!-- Footer -->
                     <div class="minimal-footer">
@@ -2736,7 +2874,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                         <div class="minimal-footer-row">
                             <span>EDU-HUB, 2nd Floor, Omelo Mumba Road, Rhodespark, Lusaka, Zambia</span>
                             <span class="minimal-footer-bullet">•</span>
-                            <span>+260764168592</span>
+                            <span>+260764168592 / +260966735623</span>
                             <span class="minimal-footer-bullet">•</span>
                             <span>info@dalpzambia.com</span>
                         </div>
@@ -2839,21 +2977,30 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 <style>
 ${allCSS}
 /* Override for standalone print page */
-body {
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
+html, body {
     background: white !important;
     color: #333 !important;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    height: auto;
-    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    height: 100% !important;
+    max-height: 297mm !important;
 }
-.sidebar, .preview-area, #print-area { display: none !important; }
+.sidebar, .preview-area, #print-area, .toast-notification, #toast-notification { display: none !important; }
 .standalone-page {
     width: 210mm;
     height: 297mm;
+    max-height: 297mm;
+    overflow: hidden;
     margin: 0 auto;
     background: white;
+    box-sizing: border-box;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
@@ -2864,12 +3011,21 @@ body {
     color-adjust: exact !important;
 }
 @media print {
-    @page { size: A4; margin: 0; }
-    body { margin: 0; padding: 0; }
+    @page { size: A4 portrait; margin: 0; }
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 100% !important;
+        max-height: 297mm !important;
+        overflow: hidden !important;
+    }
     .standalone-page {
-        width: 210mm;
-        height: 297mm;
-        page-break-after: avoid;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        overflow: hidden !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
     }
 }
 </style>
@@ -2886,7 +3042,6 @@ document.fonts.ready.then(function() {
     }, 400);
 });
 <\/script>
-    <div id="toast-notification" class="toast-notification">Notification</div>
 </body></html>`;
         }
 
@@ -2954,7 +3109,8 @@ document.fonts.ready.then(function() {
             container.style.top = '0';
             container.style.left = '0';
             container.style.width = '794px';
-            container.style.height = '1123px';
+            container.style.height = '1120px';
+            container.style.maxHeight = '1120px';
             container.style.zIndex = '999999';
             container.style.backgroundColor = '#ffffff';
             container.style.overflow = 'hidden';
@@ -2972,10 +3128,12 @@ document.fonts.ready.then(function() {
             sheet.style.padding = '0';
             sheet.style.boxShadow = 'none';
             sheet.style.width = '794px';
-            sheet.style.height = '1123px';
+            sheet.style.height = '1120px';
+            sheet.style.maxHeight = '1120px';
             sheet.style.transform = 'none';
             sheet.style.backgroundColor = '#ffffff';
             sheet.style.boxSizing = 'border-box';
+            sheet.style.overflow = 'hidden';
 
             sheet.innerHTML = renderLetterHTML(
                 currentTemplate, date, subject, salutation, body,
@@ -3025,15 +3183,16 @@ document.fonts.ready.then(function() {
                         allowTaint: true,
                         logging: false,
                         width: 794,
-                        height: 1123,
+                        height: 1120,
                         windowWidth: 794,
-                        windowHeight: 1123,
+                        windowHeight: 1120,
                         scrollX: 0,
                         scrollY: 0,
                         x: 0,
                         y: 0
                     },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
                 try {
                     await window.html2pdf().set(opt).from(sheet).save();
@@ -3066,6 +3225,116 @@ document.fonts.ready.then(function() {
             link.click();
             document.body.removeChild(link);
             showToast(`Downloaded ${filename}`);
+        }
+
+        // Download Blank Letterhead Design (PDF)
+        async function downloadBlankLetterheadPDF() {
+            const date = document.getElementById('letter-date').value || '10 MARCH 2026';
+            const subject = document.getElementById('letter-subject').value || '';
+            const salutation = document.getElementById('letter-salutation').value || 'Dear Sir/Madam,';
+            const body = document.getElementById('letter-body').value || '';
+            const senderName = document.getElementById('sender-name').value || 'MR. KELVIN SILUMESI';
+            const senderDesignation = document.getElementById('sender-designation').value || 'FOUNDER & CEO';
+
+            const dummySchool = { name: 'Blank Template', location: '' };
+            const letterHTML = renderLetterHTML(currentTemplate, date, subject, salutation, body, senderName, senderDesignation, dummySchool, true);
+
+            const container = document.createElement('div');
+            container.className = 'pdf-export-container';
+            container.style.position = 'fixed';
+            container.style.top = '-10000px';
+            container.style.left = '-10000px';
+            container.style.width = '794px';
+            container.style.height = '1120px';
+            container.style.maxHeight = '1120px';
+            container.style.overflow = 'hidden';
+            container.style.zIndex = '-9999';
+            container.innerHTML = letterHTML;
+            document.body.appendChild(container);
+            document.body.classList.add('pdf-exporting');
+
+            const filename = `DALP_Blank_Letterhead_Template.pdf`;
+            const opt = {
+                margin: 0,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    width: 794,
+                    height: 1120,
+                    windowWidth: 794,
+                    windowHeight: 1120,
+                    scrollX: 0,
+                    scrollY: 0,
+                    x: 0,
+                    y: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            showToast(`Generating Blank Letterhead PDF...`);
+            try {
+                if (window.html2pdf) {
+                    await window.html2pdf().set(opt).from(container).save();
+                    showToast(`Downloaded ${filename}`);
+                } else {
+                    window.print();
+                }
+            } catch (err) {
+                console.error("Blank PDF generation error:", err);
+                alert("Could not generate PDF directly. Opening print view...");
+                printBlankLetterhead();
+            } finally {
+                if (container.parentNode) container.parentNode.removeChild(container);
+                document.body.classList.remove('pdf-exporting');
+            }
+        }
+
+        // Print Blank Letterhead Design directly
+        function printBlankLetterhead() {
+            const date = document.getElementById('letter-date').value || '10 MARCH 2026';
+            const subject = document.getElementById('letter-subject').value || '';
+            const salutation = document.getElementById('letter-salutation').value || 'Dear Sir/Madam,';
+            const body = document.getElementById('letter-body').value || '';
+            const senderName = document.getElementById('sender-name').value || 'MR. KELVIN SILUMESI';
+            const senderDesignation = document.getElementById('sender-designation').value || 'FOUNDER & CEO';
+
+            const dummySchool = { name: 'Blank Template', location: '' };
+            const letterHTML = renderLetterHTML(currentTemplate, date, subject, salutation, body, senderName, senderDesignation, dummySchool, true);
+
+            const printWin = window.open('', '_blank', 'width=900,height=1100');
+            if (!printWin) {
+                alert('Please allow pop-ups to print the blank letterhead template.');
+                return;
+            }
+
+            const cssContent = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+                .map(node => node.outerHTML)
+                .join('\n');
+
+            printWin.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>DALP Blank Letterhead Template</title>
+                    ${cssContent}
+                    <style>
+                        @page { size: A4 portrait; margin: 0; }
+                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; height: 100% !important; max-height: 297mm !important; }
+                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; height: 297mm !important; max-height: 297mm !important; overflow: hidden !important; page-break-after: avoid !important; }
+                        .toast-notification, #toast-notification { display: none !important; }
+                    </style>
+                </head>
+                <body onload="window.print(); setTimeout(function(){ window.close(); }, 500);">
+                    ${letterHTML}
+                </body>
+                </html>
+            `);
+            printWin.document.close();
         }
 
         // Comprehensive Add to ZIP (Non-print) Implementation
@@ -3115,15 +3384,16 @@ document.fonts.ready.then(function() {
                                 allowTaint: true,
                                 logging: false,
                                 width: 794,
-                                height: 1123,
+                                height: 1120,
                                 windowWidth: 794,
-                                windowHeight: 1123,
+                                windowHeight: 1120,
                                 scrollX: 0,
                                 scrollY: 0,
                                 x: 0,
                                 y: 0
                             },
-                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                         };
 
                         try {

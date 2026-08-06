@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DALP Letterhead - Exact Template</title>
     <style>
-        /* General layout settings for A4 print */
         @page {
-            size: A4;
+            size: A4 portrait;
             margin: 0;
         }
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
             background-color: #ffffff;
             color: #333333;
             -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
             box-sizing: border-box;
             width: 210mm;
             height: 297mm;
+            max-height: 297mm;
+            overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
         }
         
         /* Corporate Colors */
@@ -221,7 +225,7 @@
             <div class="contact-container">
                 <div class="contact-vertical-divider"></div>
                 <div class="contact-details">
-                    <p><strong>Phone:</strong> +260764168592</p>
+                    <p><strong>Phone:</strong> +260764168592 / +260966735623</p>
                     <p><strong>Web:</strong> <a href="http://www.dalpzambia.com" target="_blank">www.dalpzambia.com</a></p>
                     <p><strong>ADD:</strong> EDU-HUB, 2nd Floor,</p>
                     <p style="padding-left: 26px;">Omelo Mumba Road, Lusaka, Zambia</p>
@@ -259,7 +263,7 @@
                 <svg viewBox="0 0 24 24">
                     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                 </svg>
-                <span>+260764168592</span>
+                <span>+260764168592 / +260966735623</span>
             </div>
             <div class="footer-item">
                 <!-- Envelope icon -->
