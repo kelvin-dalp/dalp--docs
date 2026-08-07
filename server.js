@@ -3,6 +3,122 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const os = require('os');
+const { execFile } = require('child_process');
+
+let puppeteer;
+try {
+    puppeteer = require('puppeteer');
+} catch (e) {
+    try {
+        puppeteer = require('../dalp-pdf-system/node_modules/puppeteer');
+    } catch (e2) {}
+}
+
+let browserInstance = null;
+async function getBrowser() {
+    if (!puppeteer) return null;
+    if (!browserInstance || !browserInstance.isConnected()) {
+        try {
+            browserInstance = await puppeteer.launch({
+                headless: 'new',
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+        } catch (e) {
+            console.error("Puppeteer launch error:", e);
+            browserInstance = null;
+        }
+    }
+    return browserInstance;
+}
+
+function getSystemChromiumPath() {
+    const candidatePaths = [
+        'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
+    ];
+    for (const p of candidatePaths) {
+        if (fs.existsSync(p)) return p;
+    }
+    return null;
+}
+
+function renderVectorPDFWithCLI(htmlPayload, cssStyles) {
+    return new Promise((resolve, reject) => {
+        const chromiumPath = getSystemChromiumPath();
+        if (!chromiumPath) {
+            return reject(new Error('No Chromium or Edge binary found on system.'));
+        }
+
+        const tempDir = path.join(__dirname, 'outputs');
+        if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+        const uniqueId = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const tempHtmlPath = path.join(tempDir, `temp_${uniqueId}.html`);
+        const tempPdfPath = path.join(tempDir, `temp_${uniqueId}.pdf`);
+
+        const baseDir = path.join(__dirname, '/').replace(/\\/g, '/');
+        const fullHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <base href="file:///${baseDir}">
+    <title>DALP Letter PDF</title>
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        *, *::before, *::after {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            width: 210mm;
+            min-height: 297mm;
+        }
+        .letter-content-wrapper {
+            box-shadow: none !important;
+            margin: 0 auto !important;
+            width: 210mm !important;
+            min-height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
+            page-break-after: avoid !important;
+        }
+    </style>
+    ${cssStyles}
+</head>
+<body>
+    ${htmlPayload}
+</body>
+</html>`;
+
+        fs.writeFileSync(tempHtmlPath, fullHTML, 'utf8');
+
+        execFile(chromiumPath, [
+            '--headless',
+            '--disable-gpu',
+            '--no-pdf-header-footer',
+            '--print-to-pdf=' + tempPdfPath,
+            tempHtmlPath
+        ], (err) => {
+            if (err || !fs.existsSync(tempPdfPath)) {
+                try { if (fs.existsSync(tempHtmlPath)) fs.unlinkSync(tempHtmlPath); } catch(e){}
+                return reject(err || new Error('Chromium CLI failed to output PDF file'));
+            }
+            try {
+                const pdfBuffer = fs.readFileSync(tempPdfPath);
+                try { fs.unlinkSync(tempHtmlPath); } catch(e){}
+                try { fs.unlinkSync(tempPdfPath); } catch(e){}
+                resolve(pdfBuffer);
+            } catch (readErr) {
+                reject(readErr);
+            }
+        });
+    });
+}
 
 let PORT = parseInt(process.env.PORT || 3000, 10);
 const DB_FILE = path.join(__dirname, 'dalp_database.db');
@@ -195,6 +311,91 @@ function handleRequest(req, res) {
             saveDatabase(db);
             return sendJSON(res, { success: true, message: 'Signature cleared' });
         }
+    }
+
+    if (pathname === '/api/render-pdf' && method === 'POST') {
+        parseRequestBody(req).then(async (body) => {
+            if (!body.html) {
+                return sendJSON(res, { success: false, message: 'HTML content required' }, 400);
+            }
+            const cssStyles = Array.from(body.css || []).join('\n');
+            let pdfBuffer = null;
+
+            // Strategy 1: Try Puppeteer API if available
+            try {
+                const browser = await getBrowser();
+                if (browser) {
+                    const page = await browser.newPage();
+                    const baseDir = path.join(__dirname, '/').replace(/\\/g, '/');
+                    const fullHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <base href="file:///${baseDir}">
+    <title>DALP Letter PDF</title>
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        *, *::before, *::after {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            width: 210mm;
+            min-height: 297mm;
+        }
+        .letter-content-wrapper {
+            box-shadow: none !important;
+            margin: 0 auto !important;
+            width: 210mm !important;
+            min-height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
+            page-break-after: avoid !important;
+        }
+    </style>
+    ${cssStyles}
+</head>
+<body>
+    ${body.html}
+</body>
+</html>`;
+                    await page.setContent(fullHTML, { waitUntil: ['load', 'networkidle0'], timeout: 15000 });
+                    pdfBuffer = await page.pdf({
+                        format: 'A4',
+                        printBackground: true,
+                        margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' },
+                        preferCSSPageSize: true
+                    });
+                    await page.close();
+                }
+            } catch (pErr) {
+                console.warn("[Puppeteer Vector Engine] Fallback to Chromium CLI:", pErr.message);
+                pdfBuffer = null;
+            }
+
+            // Strategy 2: System Chromium/Edge CLI fallback (ultra-fast 100% native vector PDF)
+            if (!pdfBuffer) {
+                try {
+                    pdfBuffer = await renderVectorPDFWithCLI(body.html, cssStyles);
+                } catch (cliErr) {
+                    console.error("[Vector PDF Engine] Both Puppeteer and Chromium CLI failed:", cliErr);
+                    return sendJSON(res, { success: false, message: cliErr.message }, 500);
+                }
+            }
+
+            res.writeHead(200, {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `attachment; filename="${body.filename || 'letter.pdf'}"`,
+                'Access-Control-Allow-Origin': '*',
+                'Content-Length': pdfBuffer.length
+            });
+            res.end(pdfBuffer);
+        });
+        return;
     }
 
     // Static File Serving

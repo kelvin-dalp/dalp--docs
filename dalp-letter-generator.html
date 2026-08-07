@@ -3395,14 +3395,23 @@ document.fonts.ready.then(function() {
             } catch (e) {}
             await new Promise(res => setTimeout(res, 150));
 
+            // Try server-side Puppeteer Vector PDF first for 100% vector text quality & minimal size
+            const serverSuccess = await tryFetchServerVectorPDF(sheet.outerHTML, filename);
+            if (serverSuccess) {
+                showToast(`Downloaded Vector PDF: ${filename}`);
+                if (container.parentNode) container.parentNode.removeChild(container);
+                document.body.classList.remove('pdf-exporting');
+                return;
+            }
+
             if (window.html2pdf) {
                 const opt = {
                     margin: 0,
                     filename: filename,
-                    image: { type: 'png', quality: 1.0 },
+                    image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 4,
-                        dpi: 300,
+                        scale: 2,
+                        dpi: 150,
                         letterRendering: true,
                         useCORS: true,
                         allowTaint: true,
@@ -3416,7 +3425,7 @@ document.fonts.ready.then(function() {
                         x: 0,
                         y: 0
                     },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
                     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
                 try {
@@ -3434,6 +3443,46 @@ document.fonts.ready.then(function() {
                 if (container.parentNode) container.parentNode.removeChild(container);
                 document.body.classList.remove('pdf-exporting');
             }
+        }
+
+        // Helper to fetch server-side vector PDF blob
+        async function tryFetchServerVectorPDF(sheetHTML, filename) {
+            try {
+                const cssContent = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+                    .map(node => node.outerHTML);
+                const response = await fetch('/api/render-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ html: sheetHTML, css: cssContent, filename: filename })
+                });
+                if (response.ok && response.headers.get('content-type')?.includes('application/pdf')) {
+                    const blob = await response.blob();
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
+
+        async function getServerVectorPDFBlob(sheetHTML, filename) {
+            try {
+                const cssContent = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+                    .map(node => node.outerHTML);
+                const response = await fetch('/api/render-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ html: sheetHTML, css: cssContent, filename: filename })
+                });
+                if (response.ok && response.headers.get('content-type')?.includes('application/pdf')) {
+                    return await response.blob();
+                }
+            } catch (e) {}
+            return null;
         }
 
         // Fallback or Direct Single HTML File Download
@@ -3483,10 +3532,10 @@ document.fonts.ready.then(function() {
             const opt = {
                 margin: 0,
                 filename: filename,
-                image: { type: 'png', quality: 1.0 },
+                image: { type: 'jpeg', quality: 0.95 },
                 html2canvas: {
-                    scale: 4,
-                    dpi: 300,
+                    scale: 2,
+                    dpi: 150,
                     letterRendering: true,
                     useCORS: true,
                     allowTaint: true,
@@ -3500,7 +3549,7 @@ document.fonts.ready.then(function() {
                     x: 0,
                     y: 0
                 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
@@ -3613,14 +3662,19 @@ document.fonts.ready.then(function() {
                     } catch (e) {}
                     await new Promise(res => setTimeout(res, 150));
 
-                    if (window.html2pdf) {
+                    // Attempt server-side vector PDF first
+                    let pdfBlob = await getServerVectorPDFBlob(sheet.outerHTML, pdfFilename);
+
+                    if (pdfBlob) {
+                        folder.file(pdfFilename, pdfBlob);
+                    } else if (window.html2pdf) {
                         const opt = {
                             margin: 0,
                             filename: pdfFilename,
-                            image: { type: 'png', quality: 1.0 },
+                            image: { type: 'jpeg', quality: 0.95 },
                             html2canvas: {
-                                scale: 4,
-                                dpi: 300,
+                                scale: 2,
+                                dpi: 150,
                                 letterRendering: true,
                                 useCORS: true,
                                 allowTaint: true,
@@ -3634,13 +3688,13 @@ document.fonts.ready.then(function() {
                                 x: 0,
                                 y: 0
                             },
-                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
                             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                         };
 
                         try {
-                            const pdfBlob = await window.html2pdf().set(opt).from(sheet).output('blob');
-                            folder.file(pdfFilename, pdfBlob);
+                            const blob = await window.html2pdf().set(opt).from(sheet).output('blob');
+                            folder.file(pdfFilename, blob);
                         } catch (pdfErr) {
                             console.warn(`PDF generation failed for ${school.name}, adding HTML file to ZIP:`, pdfErr);
                             const htmlContent = buildStandaloneLetterHTML(school);
