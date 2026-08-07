@@ -7,7 +7,7 @@
     <!-- Google Fonts for premium typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <!-- PDF & ZIP Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -382,6 +382,11 @@
             transform: none;
         }
 
+        :root {
+            --letter-font-family: 'Tinos', 'Times New Roman', Times, serif;
+            --letter-font-size: 11.5px;
+        }
+
         /* ── TEMPLATES PRINT & PREVIEW STYLE DEFINITIONS ── */
         .letter-content-wrapper {
             display: flex;
@@ -392,6 +397,26 @@
             box-sizing: border-box;
             background-color: white;
             overflow: hidden;
+            font-family: var(--letter-font-family) !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: optimizeLegibility !important;
+        }
+
+        .letter-content-wrapper * {
+            font-family: var(--letter-font-family) !important;
+        }
+
+        .letter-content-wrapper img {
+            image-rendering: -webkit-optimize-contrast !important;
+            image-rendering: crisp-edges !important;
+        }
+
+        .letter-content-wrapper font[face],
+        .letter-content-wrapper [style*="font-family"],
+        .letter-body-text *,
+        .letter-body-text [style*="font-family"] {
+            font-family: var(--letter-font-family) !important;
         }
 
         /* --- TEMPLATE 1: EXACT --- */
@@ -438,7 +463,7 @@
             color: var(--print-navy);
             letter-spacing: 1.5px;
             line-height: 1.25;
-            font-family: 'Arial', sans-serif;
+            font-family: var(--letter-font-family) !important;
         }
         .exact-contact {
             display: flex;
@@ -457,7 +482,7 @@
             font-size: 10px;
             color: #333;
             line-height: 1.45;
-            font-family: 'Arial', sans-serif;
+            font-family: var(--letter-font-family) !important;
         }
         .exact-contact-text p {
             margin: 0;
@@ -482,10 +507,10 @@
         .exact-body {
             flex: 1;
             padding: 4mm 17.6mm 2mm 17.6mm;
-            font-size: 11.5px;
+            font-size: var(--letter-font-size) !important;
             line-height: 1.38;
             color: #333333;
-            font-family: 'Arial', sans-serif;
+            font-family: var(--letter-font-family) !important;
             overflow: hidden;
             box-sizing: border-box;
         }
@@ -503,7 +528,7 @@
             align-items: center;
             font-size: 9.5px;
             color: #333;
-            font-family: 'Arial', sans-serif;
+            font-family: var(--letter-font-family) !important;
         }
         .exact-footer-item {
             display: flex;
@@ -597,7 +622,7 @@
             color: var(--print-gray);
             line-height: 1.6;
             letter-spacing: 0.3px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--letter-font-family) !important;
         }
         .minimal-contact p {
             margin: 0;
@@ -619,10 +644,10 @@
         .minimal-body {
             flex: 1;
             padding: 4mm 20mm 2mm 20mm;
-            font-size: 11px;
+            font-size: var(--letter-font-size) !important;
             line-height: 1.38;
             color: #2D3748;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--letter-font-family) !important;
             font-weight: 300;
             overflow: hidden;
             box-sizing: border-box;
@@ -649,7 +674,7 @@
             font-size: 8px;
             color: var(--print-gray);
             letter-spacing: 0.5px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--letter-font-family) !important;
         }
         .minimal-footer-bullet {
             color: var(--print-blue);
@@ -1049,6 +1074,31 @@
         <!-- Section 2: Common Letter Content -->
         <div class="sidebar-section">
             <h3 class="section-title">2. Letter Content</h3>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <div class="form-group" style="flex: 1.5; margin-bottom: 0;">
+                    <label>Font Family</label>
+                    <select id="letter-font-family" class="form-control" onchange="changeLetterFont(this.value)">
+                        <option value="'Arimo', 'Arial', sans-serif">Arial (Sans-Serif)</option>
+                        <option value="'Tinos', 'Times New Roman', Times, serif" selected>Times New Roman (Serif)</option>
+                        <option value="'Carlito', 'Cambria', Georgia, serif">Cambria (Corporate)</option>
+                        <option value="'Carlito', 'Calibri', sans-serif">Calibri (Clean)</option>
+                        <option value="'Lora', 'Georgia', serif">Georgia (Classic)</option>
+                        <option value="'EB Garamond', 'Garamond', serif">Garamond (Executive)</option>
+                        <option value="'Inter', sans-serif">Inter (Digital)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label>Font Size</label>
+                    <select id="letter-font-size" class="form-control" onchange="changeLetterFontSize(this.value)">
+                        <option value="10px">10 pt (Compact)</option>
+                        <option value="10.5px">10.5 pt</option>
+                        <option value="11.5px" selected>11.5 pt (Default)</option>
+                        <option value="12.5px">12.5 pt (Medium)</option>
+                        <option value="13.5px">13.5 pt (Large)</option>
+                        <option value="14.5px">14.5 pt (X-Large)</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <label>Letter Date</label>
                 <input type="text" id="letter-date" class="form-control" placeholder="e.g. 19th June 2026">
@@ -1134,6 +1184,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             <th>Institution / School</th>
                             <th>Location / City</th>
                             <th>Contact / Rep</th>
+                            <th>Title (Optional)</th>
                             <th style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
@@ -1146,8 +1197,8 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             <span class="paste-panel-toggle" onclick="togglePastePanel()">Need to paste a raw list? Smart List Importer</span>
             <div class="paste-panel" id="paste-panel">
                 <div style="margin-bottom: 8px; font-size: 11px; color: var(--text-muted); line-height: 1.4; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 4px;">
-                    <strong>CSV Expected Format:</strong> Institution, Location, Representative Name<br>
-                    <em>Example:</em> "University of Windsor", "Canada", "Linda Kwamboka Mokua"<br>
+                    <strong>CSV Expected Format:</strong> Institution, Location, Representative Name, Title (Optional)<br>
+                    <em>Example:</em> "University of Windsor", "Canada", "Linda Kwamboka Mokua", "Director"<br>
                     <a href="#" onclick="insertExampleCSV(); event.preventDefault();" style="color: var(--accent-blue); text-decoration: underline; cursor: pointer; font-weight: 600;">Load example CSV data</a>
                 </div>
                 <div style="margin-bottom: 8px;">
@@ -1415,13 +1466,13 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
         ];
 
         const sampleSchools = [
-            { "name": "Baobab College", "address": "Off Lilayi Road", "city": "Lusaka, Zambia", "contact": "The Head Teacher" },
-            { "name": "Rhodes Park School", "address": "Plot 11, Omelo Mumba Road", "city": "Lusaka, Zambia", "contact": "The Headmaster" },
-            { "name": "Lusaka International Community School (LICS)", "address": "24424 Alick Nkhata Road", "city": "Lusaka, Zambia", "contact": "The Principal" },
-            { "name": "American International School of Lusaka", "address": "Leopards Hill Road", "city": "Lusaka, Zambia", "contact": "The Director" },
-            { "name": "International School of Lusaka", "address": "Nangwenya Road", "city": "Lusaka, Zambia", "contact": "The Superintendent" },
-            { "name": "Banani International Secondary School", "address": "Private Bag 19", "city": "Kabwe, Zambia", "contact": "The Principal" },
-            { "name": "Chengelo School", "address": "P.O. Box 70162", "city": "Mkushi, Zambia", "contact": "The Principal" }
+            { "name": "Baobab College", "address": "Off Lilayi Road", "city": "Lusaka, Zambia", "contact": "Mr. Chris", "title": "Head Teacher" },
+            { "name": "Rhodes Park School", "address": "Plot 11, Omelo Mumba Road", "city": "Lusaka, Zambia", "contact": "Mrs. E. Musonda", "title": "Headmaster" },
+            { "name": "Lusaka International Community School (LICS)", "address": "24424 Alick Nkhata Road", "city": "Lusaka, Zambia", "contact": "Dr. A. Taylor", "title": "Principal" },
+            { "name": "American International School of Lusaka", "address": "Leopards Hill Road", "city": "Lusaka, Zambia", "contact": "The Representative", "title": "Director" },
+            { "name": "International School of Lusaka", "address": "Nangwenya Road", "city": "Lusaka, Zambia", "contact": "Mr. M. Banda", "title": "Superintendent" },
+            { "name": "Banani International Secondary School", "address": "Private Bag 19", "city": "Kabwe, Zambia", "contact": "The Representative", "title": "Principal" },
+            { "name": "Chengelo School", "address": "P.O. Box 70162", "city": "Mkushi, Zambia", "contact": "Mr. P. Cowling", "title": "Principal" }
         ];
 
         // ==================== UI & TEXT UTILITIES ====================
@@ -1618,9 +1669,27 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
         }
 
         // ==================== INTERACTIVE BACKEND ACTION HANDLERS ====================
+        let autoSaveSchoolsTimer = null;
+        function autoSaveSchools() {
+            if (autoSaveSchoolsTimer) clearTimeout(autoSaveSchoolsTimer);
+            autoSaveSchoolsTimer = setTimeout(async () => {
+                try {
+                    await DALPDatabase.savePresets(schools);
+                    DALPDatabase.saveSetting('currentPreviewIndex', currentPreviewIndex);
+                    localStorage.setItem('dalp_saved_schools', JSON.stringify(schools));
+                    localStorage.setItem('dalp_preview_index', currentPreviewIndex);
+                } catch (err) {
+                    console.error("Auto-save schools error:", err);
+                }
+            }, 300);
+        }
+
         async function savePresetsToDB() {
             try {
                 await DALPDatabase.savePresets(schools);
+                DALPDatabase.saveSetting('currentPreviewIndex', currentPreviewIndex);
+                localStorage.setItem('dalp_saved_schools', JSON.stringify(schools));
+                localStorage.setItem('dalp_preview_index', currentPreviewIndex);
                 showToast("Presets saved successfully!");
             } catch (err) {
                 console.error("Error saving presets:", err);
@@ -1752,7 +1821,10 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                     let contact = cols[2] ? cols[2].trim() : "The Representative";
                     if (applyTitleCase && contact !== "The Representative") contact = formatSmartTitle(contact);
 
-                    parsedSchools.push({ name, address: addressStr, city: addressStr, contact });
+                    let title = cols[3] ? cols[3].trim() : "";
+                    if (applyTitleCase && title) title = formatSmartTitle(title);
+
+                    parsedSchools.push({ name, address: addressStr, city: addressStr, contact, title });
                 }
             });
             return parsedSchools;
@@ -2137,7 +2209,38 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                             }
                         });
                     }
+                    if (settings['currentPreviewIndex'] !== undefined) {
+                        currentPreviewIndex = parseInt(settings['currentPreviewIndex'], 10) || 0;
+                    }
+                    if (settings['letterFontFamily']) {
+                        currentLetterFont = settings['letterFontFamily'];
+                        const fontSelect = document.getElementById('letter-font-family');
+                        if (fontSelect) fontSelect.value = currentLetterFont;
+                    }
+                    if (settings['letterFontSize']) {
+                        currentLetterFontSize = settings['letterFontSize'];
+                        const sizeSelect = document.getElementById('letter-font-size');
+                        if (sizeSelect) sizeSelect.value = currentLetterFontSize;
+                    }
                 }
+
+                // Restore active index, font & size from localStorage if available
+                if (localStorage.getItem('dalp_preview_index') !== null) {
+                    const savedIdx = parseInt(localStorage.getItem('dalp_preview_index'), 10);
+                    if (!isNaN(savedIdx)) currentPreviewIndex = savedIdx;
+                }
+                if (localStorage.getItem('dalp_letter_font')) {
+                    currentLetterFont = localStorage.getItem('dalp_letter_font');
+                    const fontSelect = document.getElementById('letter-font-family');
+                    if (fontSelect) fontSelect.value = currentLetterFont;
+                }
+                if (localStorage.getItem('dalp_letter_font_size')) {
+                    currentLetterFontSize = localStorage.getItem('dalp_letter_font_size');
+                    const sizeSelect = document.getElementById('letter-font-size');
+                    if (sizeSelect) sizeSelect.value = currentLetterFontSize;
+                }
+                document.documentElement.style.setProperty('--letter-font-family', currentLetterFont);
+                document.documentElement.style.setProperty('--letter-font-size', currentLetterFontSize);
 
                 // 2. Restore E-Signature from SQLite API
                 const sigData = await DALPDatabase.loadSignature();
@@ -2160,11 +2263,22 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 initSignatureCanvas();
                 setupFormAutoSave();
 
-                // 4. Restore Presets from SQLite API or load default list
-                const savedPresets = await DALPDatabase.loadPresets();
+                // 4. Restore Presets from SQLite API or localStorage backup, or load default list
+                let savedPresets = await DALPDatabase.loadPresets();
+                if (!savedPresets || !Array.isArray(savedPresets) || savedPresets.length === 0) {
+                    try {
+                        const localBackup = localStorage.getItem('dalp_saved_schools');
+                        if (localBackup) savedPresets = JSON.parse(localBackup);
+                    } catch (e) {
+                        console.error("Error reading localStorage backup:", e);
+                    }
+                }
+
                 if (savedPresets && Array.isArray(savedPresets) && savedPresets.length > 0) {
                     schools = savedPresets;
-                    currentPreviewIndex = 0;
+                    if (currentPreviewIndex >= schools.length) {
+                        currentPreviewIndex = Math.max(0, schools.length - 1);
+                    }
                     rebuildSchoolTable();
                     updatePreview();
                 } else {
@@ -2172,7 +2286,17 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 }
             } catch (err) {
                 console.error("Backend initialization error:", err);
-                loadUniversityPreset();
+                let loaded = false;
+                try {
+                    const localBackup = localStorage.getItem('dalp_saved_schools');
+                    if (localBackup) {
+                        schools = JSON.parse(localBackup);
+                        rebuildSchoolTable();
+                        updatePreview();
+                        loaded = true;
+                    }
+                } catch (e) {}
+                if (!loaded) loadUniversityPreset();
             }
         }
 
@@ -2268,6 +2392,27 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             runStartup();
         }
 
+        let currentLetterFont = "'Tinos', 'Times New Roman', Times, serif";
+        let currentLetterFontSize = "11.5px";
+
+        function changeLetterFont(fontVal) {
+            if (!fontVal) return;
+            currentLetterFont = fontVal;
+            document.documentElement.style.setProperty('--letter-font-family', fontVal);
+            DALPDatabase.saveSetting('letterFontFamily', fontVal);
+            localStorage.setItem('dalp_letter_font', fontVal);
+            updatePreview();
+        }
+
+        function changeLetterFontSize(sizeVal) {
+            if (!sizeVal) return;
+            currentLetterFontSize = sizeVal;
+            document.documentElement.style.setProperty('--letter-font-size', sizeVal);
+            DALPDatabase.saveSetting('letterFontSize', sizeVal);
+            localStorage.setItem('dalp_letter_font_size', sizeVal);
+            updatePreview();
+        }
+
         function selectTemplate(templateName, element) {
             currentTemplate = templateName;
             DALPDatabase.saveSetting('currentTemplate', currentTemplate);
@@ -2304,6 +2449,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 
             updatePreview();
             updateSchoolCountDisplay();
+            autoSaveSchools();
         }
 
         function prevSchoolPreview() {
@@ -2320,7 +2466,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             selectSchoolPreview(newIndex);
         }
 
-        function addSchoolRow(school = { name: '', address: '', city: '', contact: '' }, renderPreview = true) {
+        function addSchoolRow(school = { name: '', address: '', city: '', contact: '', title: '' }, renderPreview = true) {
             const tbody = document.getElementById('school-tbody');
             if (!tbody) return;
             const index = schools.length;
@@ -2338,6 +2484,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 <td><input type="text" class="table-input" value="${school.name || ''}" oninput="updateSchoolData(${index}, 'name', this.value)" placeholder="University / School Name" onclick="event.stopPropagation()"></td>
                 <td><input type="text" class="table-input" value="${cityOrCountry}" oninput="updateSchoolAddress(${index}, this.value)" placeholder="Country / City" onclick="event.stopPropagation()"></td>
                 <td><input type="text" class="table-input" value="${school.contact || ''}" oninput="updateSchoolData(${index}, 'contact', this.value)" placeholder="Contact Person / Rep" onclick="event.stopPropagation()"></td>
+                <td><input type="text" class="table-input" value="${school.title || ''}" oninput="updateSchoolData(${index}, 'title', this.value)" placeholder="Title (e.g. Head Teacher)" onclick="event.stopPropagation()"></td>
                 <td style="text-align: center; white-space: nowrap;">
                     <button class="btn btn-primary" onclick="downloadSingleDirectPDF(${index}); event.stopPropagation();" style="padding: 2px 6px; font-size: 10px; margin-right: 2px; background-color: var(--accent-blue);" title="Directly download PDF for this letter">
                         <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align: middle;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
@@ -2357,12 +2504,14 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 updatePreview();
                 updateSchoolCountDisplay();
             }
+            autoSaveSchools();
         }
 
         function updateSchoolData(index, field, value) {
             if (schools[index]) {
                 schools[index][field] = value;
                 updatePreview();
+                autoSaveSchools();
             }
         }
 
@@ -2371,6 +2520,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 schools[index].city = value;
                 schools[index].address = value;
                 updatePreview();
+                autoSaveSchools();
             }
         }
 
@@ -2383,6 +2533,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             rebuildSchoolTable();
             updatePreview();
             updateSchoolCountDisplay();
+            autoSaveSchools();
         }
 
         function rebuildSchoolTable() {
@@ -2392,6 +2543,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             const tempSchools = [...schools];
             schools = [];
             tempSchools.forEach((s) => addSchoolRow(s, false));
+            autoSaveSchools();
         }
 
 
@@ -2413,6 +2565,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             document.getElementById('school-tbody').innerHTML = '';
             updatePreview();
             updateSchoolCountDisplay();
+            autoSaveSchools();
         }
 
                 function updateSchoolCountDisplay() {
@@ -2499,7 +2652,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 
 
         function insertExampleCSV() {
-            const exampleCSV = `"University of Windsor", "Canada", "Linda Kwamboka Mokua"\n"Charles Stuart University", "Australia", "Jodie Lindsay"\n"Eurasia Institute", "Germany", "Imran Khan"`;
+            const exampleCSV = `"University of Windsor", "Canada", "Linda Kwamboka Mokua", "Director of Admissions"\n"Charles Stuart University", "Australia", "Jodie Lindsay", "Regional Manager"\n"Eurasia Institute", "Germany", "Imran Khan", "Head of Admissions"`;
             const textarea = document.getElementById('bulk-paste');
             if (textarea) {
                 textarea.value = exampleCSV;
@@ -2573,8 +2726,10 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                         const addressStr = cols[1] ? cols[1].trim() : "";
                         let contact = cols[2] ? cols[2].trim() : "The Representative";
                         if (applyTitleCase && contact !== "The Representative") contact = formatSmartTitle(contact);
+                        let title = cols[3] ? cols[3].trim() : "";
+                        if (applyTitleCase && title) title = formatSmartTitle(title);
 
-                        newSchools.push({ name, address: addressStr, city: addressStr, contact });
+                        newSchools.push({ name, address: addressStr, city: addressStr, contact, title });
                     }
                 });
             }
@@ -2611,15 +2766,20 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             }
         }
 
-                // Helper: Build Recipient Address Block (omits empty fields)
+        // Helper: Build Recipient Address Block (omits empty fields)
         function buildRecipientAddress(school) {
             if (!school || !school.name) {
-                return `<strong>[Recipient Contact]</strong><br>[School Name]<br>[City, Zambia]`;
+                const titleText = (school && school.title && school.title.trim()) ? school.title.trim() + '<br>' : '[Recipient Title]<br>';
+                return `<strong>[Recipient Contact]</strong><br>${titleText}[School Name]<br>[City, Zambia]`;
             }
             
             let html = '';
             if (school.contact && school.contact.trim() && school.contact.trim() !== 'The Representative') {
                 html += `<strong>${school.contact.trim()}</strong><br>`;
+            }
+
+            if (school.title && school.title.trim()) {
+                html += `${school.title.trim()}<br>`;
             }
             
             html += `${school.name.trim()}<br>`;
@@ -2646,15 +2806,45 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             return html;
         }
 
-                        // Helper: Get Personalized Salutation
+        // Helper: Cleanly format contact names for professional salutations
+        function formatSalutationName(contactStr) {
+            if (!contactStr) return '';
+            let name = contactStr.trim();
+            if (!name) return '';
+
+            if (name.toLowerCase().startsWith('dear ')) {
+                return name.endsWith(',') ? name : name + ',';
+            }
+
+            // Strip leading "The " if present (e.g. "The Representative" -> "Representative", "The Head Teacher" -> "Head Teacher")
+            if (/^the\s+/i.test(name)) {
+                name = name.replace(/^the\s+/i, '').trim();
+            }
+
+            // Detect honorific prefixes (Mr., Mr, Mrs., Mrs, Ms., Ms, Miss)
+            const prefixMatch = name.match(/^(mr\.|mr|mrs\.|mrs|ms\.|ms|miss)\s+(.+)$/i);
+            if (prefixMatch) {
+                const restOfName = prefixMatch[2].trim();
+                // If there's a full name (first + last name e.g. "Jon Hammod"), strip honorific prefix -> "Jon Hammod" => "Dear Jon Hammod,"
+                if (restOfName.includes(' ')) {
+                    name = restOfName;
+                } else {
+                    // Honorific + single last name e.g. "Mr. Hammod" -> "Dear Mr. Hammod,"
+                    let prefix = prefixMatch[1].endsWith('.') ? prefixMatch[1] : prefixMatch[1] + '.';
+                    prefix = prefix.charAt(0).toUpperCase() + prefix.slice(1).toLowerCase();
+                    name = prefix + ' ' + restOfName;
+                }
+            }
+
+            return `Dear ${name},`;
+        }
+
+        // Helper: Get Personalized Salutation
         function getPersonalizedSalutation(salutationInput, school) {
             if (autoPersonalizeSalutation) {
                 if (school && school.contact && school.contact.trim() && school.contact.trim() !== 'The Representative') {
-                    let contact = school.contact.trim();
-                    if (contact.toLowerCase().startsWith('dear ')) {
-                        return contact.endsWith(',') ? contact : contact + ',';
-                    }
-                    return `Dear ${contact},`;
+                    const formatted = formatSalutationName(school.contact);
+                    if (formatted) return formatted;
                 }
 
                 if (school && school.contact && school.contact.trim() === 'The Representative') {
@@ -2681,7 +2871,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 
             if (template === 'exact') {
                 return `
-                <div class="letter-content-wrapper">
+                <div class="letter-content-wrapper" style="--letter-font-family: ${currentLetterFont}; --letter-font-size: ${currentLetterFontSize}; font-family: ${currentLetterFont} !important;">
                     <!-- Top bar -->
                     <div class="exact-top-bar">
                         <div class="exact-top-navy"></div>
@@ -2788,7 +2978,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 `;
             } else {
                 return `
-                <div class="letter-content-wrapper">
+                <div class="letter-content-wrapper" style="--letter-font-family: ${currentLetterFont}; --letter-font-size: ${currentLetterFontSize}; font-family: ${currentLetterFont} !important;">
                     <!-- Top Bar -->
                     <div class="minimal-top-bar">
                         <div class="minimal-top-navy"></div>
@@ -2970,9 +3160,16 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
 <title>DALP Invitation - ${school.name || 'Letter'}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 ${allCSS}
+:root {
+    --letter-font-family: ${currentLetterFont} !important;
+    --letter-font-size: ${currentLetterFontSize} !important;
+}
+.letter-content-wrapper, .letter-content-wrapper * {
+    font-family: ${currentLetterFont} !important;
+}
 /* Override for standalone print page */
 @page {
     size: A4 portrait;
@@ -3139,9 +3336,35 @@ document.fonts.ready.then(function() {
             const handles = sheet.querySelectorAll('.sig-resize-handle');
             handles.forEach(h => h.style.display = 'none');
 
+            // Force font-family inline on all elements so html2canvas picks it up
+            // (CSS custom properties are not reliably resolved by html2canvas on temp containers)
+            applyExportFontOverrides(sheet);
+
             container.appendChild(sheet);
             document.body.appendChild(container);
             return { container, sheet };
+        }
+
+        // Helper: Force font-family and font-size inline on export containers
+        // html2canvas does not reliably resolve CSS custom properties (var(--...))
+        // so we set the computed font directly on every relevant element.
+        function applyExportFontOverrides(rootEl) {
+            if (!rootEl) return;
+            // Set font on the root element itself
+            rootEl.style.fontFamily = currentLetterFont;
+
+            // Target all elements within the letter wrapper
+            const allElements = rootEl.querySelectorAll('*');
+            allElements.forEach(el => {
+                // Set font-family on every element to ensure html2canvas picks it up
+                el.style.fontFamily = currentLetterFont;
+            });
+
+            // Set font-size specifically on the body content areas only
+            const bodySel = rootEl.querySelectorAll('.exact-body, .minimal-body');
+            bodySel.forEach(el => {
+                el.style.fontSize = currentLetterFontSize;
+            });
         }
 
         // Helper: Sanitize school names for filenames
@@ -3164,16 +3387,23 @@ document.fonts.ready.then(function() {
             const { container, sheet } = createTempLetterContainer(school);
             const filename = getSanitizedFilename(school.name, 'pdf');
 
-            // Wait brief moment for DOM layout and images to settle
-            await new Promise(res => setTimeout(res, 120));
+            // Wait for fonts & DOM layout and images to settle
+            try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+            } catch (e) {}
+            await new Promise(res => setTimeout(res, 150));
 
             if (window.html2pdf) {
                 const opt = {
                     margin: 0,
                     filename: filename,
-                    image: { type: 'jpeg', quality: 0.98 },
+                    image: { type: 'png', quality: 1.0 },
                     html2canvas: {
-                        scale: 2,
+                        scale: 4,
+                        dpi: 300,
+                        letterRendering: true,
                         useCORS: true,
                         allowTaint: true,
                         logging: false,
@@ -3186,7 +3416,7 @@ document.fonts.ready.then(function() {
                         x: 0,
                         y: 0
                     },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
                     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
                 try {
@@ -3245,6 +3475,7 @@ document.fonts.ready.then(function() {
             container.style.overflow = 'hidden';
             container.style.zIndex = '-9999';
             container.innerHTML = letterHTML;
+            applyExportFontOverrides(container);
             document.body.appendChild(container);
             document.body.classList.add('pdf-exporting');
 
@@ -3252,9 +3483,11 @@ document.fonts.ready.then(function() {
             const opt = {
                 margin: 0,
                 filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
+                image: { type: 'png', quality: 1.0 },
                 html2canvas: {
-                    scale: 2,
+                    scale: 4,
+                    dpi: 300,
+                    letterRendering: true,
                     useCORS: true,
                     allowTaint: true,
                     logging: false,
@@ -3267,11 +3500,18 @@ document.fonts.ready.then(function() {
                     x: 0,
                     y: 0
                 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             showToast(`Generating Blank Letterhead PDF...`);
+            try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+            } catch (e) {}
+            await new Promise(res => setTimeout(res, 150));
+
             try {
                 if (window.html2pdf) {
                     await window.html2pdf().set(opt).from(container).save();
@@ -3365,16 +3605,23 @@ document.fonts.ready.then(function() {
                     const { container, sheet } = createTempLetterContainer(school);
                     const pdfFilename = getSanitizedFilename(school.name, 'pdf');
 
-                    // Allow layout painting
-                    await new Promise(res => setTimeout(res, 120));
+                    // Allow layout & web fonts to settle
+                    try {
+                        if (document.fonts && document.fonts.ready) {
+                            await document.fonts.ready;
+                        }
+                    } catch (e) {}
+                    await new Promise(res => setTimeout(res, 150));
 
                     if (window.html2pdf) {
                         const opt = {
                             margin: 0,
                             filename: pdfFilename,
-                            image: { type: 'jpeg', quality: 0.98 },
+                            image: { type: 'png', quality: 1.0 },
                             html2canvas: {
-                                scale: 2,
+                                scale: 4,
+                                dpi: 300,
+                                letterRendering: true,
                                 useCORS: true,
                                 allowTaint: true,
                                 logging: false,
@@ -3387,7 +3634,7 @@ document.fonts.ready.then(function() {
                                 x: 0,
                                 y: 0
                             },
-                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: false },
                             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                         };
 
