@@ -142,8 +142,8 @@
         /* Template Chooser Grid */
         .template-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
         }
 
         .template-card {
@@ -312,8 +312,8 @@
         /* Letter Sheet Simulation (A4 Page Ratio) */
         .letter-sheet {
             width: 210mm;
-            height: 297mm;
-            max-height: 297mm;
+            min-height: 297mm;
+            height: auto;
             background-color: white;
             color: #333333;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
@@ -321,9 +321,10 @@
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             position: relative;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: visible;
         }
 
         /* Layout specifically for high-fidelity offline PDF rendering */
@@ -391,16 +392,43 @@
         .letter-content-wrapper {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            max-height: 100%;
+            justify-content: space-between;
+            min-height: 297mm;
+            height: auto;
             position: relative;
             box-sizing: border-box;
             background-color: white;
-            overflow: hidden;
+            overflow: visible;
             font-family: var(--letter-font-family) !important;
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
             text-rendering: optimizeLegibility !important;
+        }
+
+        /* Subtle DALP logo watermark for executive document background */
+        .letter-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .letter-watermark img {
+            width: 380px;
+            max-width: 80%;
+            height: auto;
+            object-fit: contain;
+            filter: grayscale(100%);
+            opacity: 0.7;
         }
 
         .letter-content-wrapper * {
@@ -702,6 +730,176 @@
             border-radius: 2px;
         }
 
+        /* --- TEMPLATE 3: EXECUTIVE VIP --- */
+        .exec-top-bar {
+            width: 100%;
+            height: 6px;
+            display: flex;
+            flex-shrink: 0;
+        }
+        .exec-top-navy {
+            width: 50%;
+            background-color: var(--print-navy);
+        }
+        .exec-top-blue {
+            width: 50%;
+            background-color: var(--print-blue);
+        }
+        .exec-header {
+            padding: 10mm 18mm 4mm 18mm;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .exec-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4mm;
+            border-bottom: 2px solid var(--print-navy);
+        }
+        .exec-brand {
+            display: flex;
+            align-items: center;
+            gap: 5mm;
+        }
+        .exec-logo {
+            width: 32mm;
+            height: 24mm;
+            object-fit: contain;
+        }
+        .exec-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .exec-brand-text h1 {
+            margin: 0;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--print-navy);
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+        .exec-brand-subtitle {
+            margin: 1.5mm 0 0 0;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--print-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .exec-contact {
+            text-align: right;
+            font-size: 8.5px;
+            color: #4A5568;
+            line-height: 1.5;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-body {
+            flex: 1;
+            padding: 5mm 18mm 4mm 18mm;
+            font-size: var(--letter-font-size) !important;
+            line-height: 1.42;
+            color: #1A202C;
+            font-family: var(--letter-font-family) !important;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .exec-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        .exec-footer-row {
+            padding: 2mm 18mm 4mm 18mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.5px;
+            color: #718096;
+            font-family: var(--letter-font-family) !important;
+            border-top: 1px solid var(--print-line);
+        }
+
+        /* Executive Authority Sign-off Block (Matching User Image) */
+        .exec-sign-off-container {
+            margin-top: 5mm;
+            padding-top: 4mm;
+            border-top: 1px solid #CBD5E1;
+            width: 100%;
+        }
+        .exec-authority-text {
+            font-style: italic;
+            font-size: 11px;
+            color: #64748B;
+            margin-bottom: 2mm;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-salutation-close {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--print-navy);
+            margin-bottom: 6mm;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-signatory-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+        }
+        .exec-signatory-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5mm;
+        }
+        .exec-signatory-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--print-navy);
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-signatory-position {
+            font-size: 12px;
+            font-weight: 400;
+            color: #64748B;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-company-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--print-blue);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Outfit', sans-serif;
+            margin-top: 1mm;
+        }
+        .exec-stamp-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5mm;
+        }
+        .exec-stamp-svg {
+            width: 54px;
+            height: 54px;
+            opacity: 0.85;
+        }
+        .exec-stamp-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94A3B8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Outfit', sans-serif;
+        }
+
         /* Shared Letter Body formatting */
         .letter-recipient {
             margin-top: 3mm;
@@ -815,14 +1013,16 @@
                 size: A4 portrait;
                 margin: 0;
             }
+            .sig-resize-handle {
+                display: none !important;
+            }
             html, body {
                 background: white !important;
                 color: black !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                overflow: hidden !important;
-                height: 100% !important;
-                max-height: 297mm !important;
+                overflow: visible !important;
+                height: auto !important;
             }
             .sidebar, .preview-area, .toast-notification, #toast-notification {
                 display: none !important;
@@ -834,12 +1034,11 @@
             }
             .print-page, .letter-sheet, .standalone-page {
                 width: 210mm !important;
-                height: 297mm !important;
-                max-height: 297mm !important;
+                min-height: 297mm !important;
+                height: auto !important;
                 box-sizing: border-box !important;
-                overflow: hidden !important;
+                overflow: visible !important;
                 page-break-after: always;
-                page-break-inside: avoid !important;
                 background-color: white !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -1068,6 +1267,10 @@
                     <div class="template-card-title">Minimalist Premium</div>
                     <div class="template-card-desc">Refined layout with plenty of whitespace</div>
                 </div>
+                <div class="template-card" onclick="selectTemplate('executive', this)">
+                    <div class="template-card-title">Executive VIP</div>
+                    <div class="template-card-desc">Prestige styling with Official DALP Stamp & Authority sign-off</div>
+                </div>
             </div>
         </div>
 
@@ -1150,14 +1353,64 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                 </div>
             </div>
             <div class="form-group">
-                <label>Sender Name</label>
+                <label>Sender Name (Standard Templates)</label>
                 <input type="text" id="sender-name" class="form-control" value="Dr. Patrick Nkhoma">
             </div>
             <div class="form-group">
-                <label>Sender Designation</label>
+                <label>Sender Designation (Standard Templates)</label>
                 <input type="text" id="sender-designation" class="form-control" value="Managing Director">
             </div>
+            <div class="form-group" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-dark);">
+                <label style="color: var(--accent-blue);">Executive Signatory Name (Executive Template)</label>
+                <input type="text" id="exec-signatory-name" class="form-control" value="Daliso Nkhoma">
+            </div>
+            <div class="form-group">
+                <label style="color: var(--accent-blue);">Executive Signatory Position (Executive Template)</label>
+                <input type="text" id="exec-signatory-position" class="form-control" value="Business Development Officer">
+            </div>
+
+            <!-- Executive Letter Presets -->
+            <div class="form-group" style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-dark);">
+                <label style="color: var(--accent-blue); font-weight: 700; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="toggleExecPresets()">
+                    <span style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Executive Letter Presets
+                    </span>
+                    <span id="exec-presets-arrow" style="font-size: 12px; transition: transform 0.2s;">▼</span>
+                </label>
+                <div id="exec-presets-panel" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <button class="btn btn-secondary" onclick="loadExecPreset('germany')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polygon points="12 2 2 7 22 7"></polygon><line x1="4" y1="20" x2="20" y2="20"></line><line x1="4" y1="7" x2="4" y2="20"></line><line x1="8" y1="7" x2="8" y2="20"></line><line x1="12" y1="7" x2="12" y2="20"></line><line x1="16" y1="7" x2="16" y2="20"></line><line x1="20" y1="7" x2="20" y2="20"></line></svg>
+                        Embassy of Germany
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('drc')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polygon points="12 2 2 7 22 7"></polygon><line x1="4" y1="20" x2="20" y2="20"></line><line x1="4" y1="7" x2="4" y2="20"></line><line x1="8" y1="7" x2="8" y2="20"></line><line x1="12" y1="7" x2="12" y2="20"></line><line x1="16" y1="7" x2="16" y2="20"></line><line x1="20" y1="7" x2="20" y2="20"></line></svg>
+                        Embassy of DR Congo
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('stanchart')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><line x1="3" y1="21" x2="21" y2="21"></line><line x1="3" y1="10" x2="21" y2="10"></line><polygon points="12 2 3 10 21 10"></polygon><line x1="5" y1="10" x2="5" y2="21"></line><line x1="12" y1="10" x2="12" y2="21"></line><line x1="19" y1="10" x2="19" y2="21"></line></svg>
+                        Standard Chartered Zambia
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('idc')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                        IDC – Strategic Partnership
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('zim')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        Zambia Institute of Marketing
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('zanaco')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><line x1="3" y1="21" x2="21" y2="21"></line><line x1="3" y1="10" x2="21" y2="10"></line><polygon points="12 2 3 10 21 10"></polygon><line x1="5" y1="10" x2="5" y2="21"></line><line x1="12" y1="10" x2="12" y2="21"></line><line x1="19" y1="10" x2="19" y2="21"></line></svg>
+                        ZANACO – Student Finance
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadExecPreset('zccm')" style="text-align: left; font-size: 11px; padding: 6px 10px; border-left: 3px solid #0093FB; display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        ZCCM-IH Partnership
+                    </button>
+                </div>
+            </div>
         </div>
+
 
         <!-- Section 3: Institutions & Representatives Input -->
         <div class="sidebar-section">
@@ -1831,7 +2084,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
         }
 
         // ==================== AUTO SAVE HELPERS ====================
-        const autoSaveFieldIds = ['letter-date', 'letter-subject', 'letter-salutation', 'letter-body', 'sender-name', 'sender-designation'];
+        const autoSaveFieldIds = ['letter-date', 'letter-subject', 'letter-salutation', 'letter-body', 'sender-name', 'sender-designation', 'exec-signatory-name', 'exec-signatory-position'];
 
         function setupFormAutoSave() {
             // Binding is already performed in runStartup, but this guarantees it
@@ -1860,6 +2113,9 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
         
         // State for E-Signature
         let currentSignatureDataURL = "";
+        let isDrawingSignature = false;
+        let lastSigX = 0;
+        let lastSigY = 0;
 
         
         // Movable & Resizable Signature Position & Height State
@@ -2316,7 +2572,7 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             if (dateElem && !dateElem.value) dateElem.value = formatToday();
 
             // 2. Register Input Listeners for Real-time Preview & Auto-Save
-            const inputIds = ['letter-date', 'letter-subject', 'letter-salutation', 'letter-body', 'sender-name', 'sender-designation'];
+            const inputIds = ['letter-date', 'letter-subject', 'letter-salutation', 'letter-body', 'sender-name', 'sender-designation', 'exec-signatory-name', 'exec-signatory-position'];
             inputIds.forEach(id => {
                 const elem = document.getElementById(id);
                 if (elem) {
@@ -2553,7 +2809,158 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
             selectSchoolPreview(0);
         }
 
+
+        function toggleExecPresets() {
+            const panel = document.getElementById('exec-presets-panel');
+            const arrow = document.getElementById('exec-presets-arrow');
+            const isHidden = panel.style.display === 'none';
+            panel.style.display = isHidden ? 'flex' : 'none';
+            arrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+
+        const execLetterPresets = {
+            germany: {
+                recipient: 'His Excellency the Ambassador\nEmbassy of the Federal Republic of Germany\n5219 Haile Selassie Avenue\nLusaka, Zambia',
+                subject: 'Partnership Proposal to Promote German Higher Education',
+                salutation: 'Your Excellency,',
+                body: `<p>On behalf of DALP Consultancy Services, I wish to convey our highest regards and to express our interest in establishing a collaborative relationship with the Embassy of the Federal Republic of Germany.</p>
+<p>For more than twenty years, DALP has been committed to helping students achieve their academic ambitions through professional education counselling, international university admissions, visa processing, and comprehensive study abroad support.</p>
+<p>Our work is guided by strong institutional values of accountability, integrity, transparency, professionalism, reliability, and ethical service delivery, which have earned us the trust of students, parents, and partner institutions over the years.</p>
+<p>DALP also upholds a deep commitment to excellence, student-centred service, and responsible guidance, ensuring that every applicant receives accurate information and fair access to global education opportunities. We take pride in maintaining high standards of due diligence and compliance, particularly in matters relating to international admissions and visa processes.</p>
+<p>Germany's reputation for academic excellence, engineering, scientific research, innovation, and affordable higher education makes it one of the most desirable destinations for ambitious students across Africa. We would be honoured to work alongside the Embassy in promoting educational opportunities available through German universities and related academic programmes.</p>
+<p>Our annual international education events attract students, parents, educators, and institutions from across Zambia, creating an ideal platform to showcase Germany's higher education sector.</p>
+<p>We would appreciate the opportunity to discuss possible areas of cooperation at your convenience.</p>
+<p>Please accept, Your Excellency, the assurances of our highest esteem.</p>`
+            },
+            drc: {
+                recipient: 'His Excellency the Ambassador\nEmbassy of the Democratic Republic of Congo\n1124 Parirenyatwa Road, Fairview\nP.O Box 31287\nLusaka, Zambia',
+                subject: 'Proposal for Educational Collaboration Between DALP Consultancy Services and the Embassy of the Democratic Republic of Congo',
+                salutation: 'Your Excellency,',
+                body: `<p>Please accept our warm compliments.</p>
+<p>DALP Consultancy Services is one of Zambia's experienced international education consultancies, with over twenty years of assisting students in accessing quality education around the world through university admissions, visa processing, career guidance, and related educational support services.</p>
+<p>Recognizing the close relationship between Zambia and the Democratic Republic of Congo, we would be honoured to explore opportunities to support Congolese students and professionals who seek internationally recognized educational opportunities. Likewise, we would welcome initiatives that promote academic exchange, educational awareness, and access to higher education. Our approach is rooted in excellence, accountability, and long-term impact, ensuring that students are not only placed in institutions but are fully supported to succeed.</p>
+<p>Our organization regularly hosts international education exhibitions that bring together universities, embassies, and education providers from around the world, including representatives from Canada, Australia, the UK, and New Zealand. We believe the Embassy's participation would strengthen educational cooperation between our countries while providing valuable information to prospective students.</p>
+<p>We would be honoured to arrange a courtesy meeting at your convenience to present our services and explore areas of mutual interest and potential collaboration.</p>
+<p>Please accept, Your Excellency, the assurances of our highest consideration.</p>`
+            },
+            stanchart: {
+                recipient: 'The Chief Executive Officer\nStandard Chartered Bank Zambia Plc\nNasser Road\nLusaka, Zambia',
+                subject: 'Partnership Opportunity to Support Students Pursuing International Education',
+                salutation: 'Dear Sir/Madam,',
+                body: `<p>DALP Consultancy Services respectfully introduces itself as a leading international education consultancy with more than twenty years of experience helping students pursue higher education in Australia, Canada, the UK, New Zealand, and across multiple destinations worldwide.</p>
+<p>Each year, many students preparing for overseas studies require secure banking solutions, international payments, foreign currency guidance, financial planning, and access to education financing. These needs align naturally with the services provided by Standard Chartered.</p>
+<p>We believe there is an opportunity to collaborate in providing students and their families with seamless financial solutions alongside our education advisory services. Joint financial literacy seminars, international payment guidance, and educational events would create significant value for prospective students.</p>
+<p>We would welcome an opportunity to discuss how our organizations can work together to improve the student journey while strengthening customer engagement.</p>
+<p>Thank you for your consideration.</p>`
+            },
+            idc: {
+                recipient: 'The Chief Executive Officer\nIndustrial Development Corporation Zambia\n61 Independence Avenue, Prospect Hill\nP.O Box 37232\nLusaka, Zambia',
+                subject: 'Exploring a Strategic Partnership in Human Capital Development',
+                salutation: 'Dear Sir/Madam,',
+                body: `<p>On behalf of DALP Consultancy Services, I would like to introduce our organization and explore opportunities for collaboration in supporting Zambia's human capital development agenda.</p>
+<p>For over 20 years, DALP Consultancy Services has been a trusted international education consultancy, assisting students and professionals with university admissions, visa processing, career counselling, English language testing registration, and pre-departure support. We have established partnerships with leading universities across Australia, Canada, the United Kingdom, New Zealand, Europe, the United States, and other international destinations.</p>
+<p>As the Industrial Development Corporation continues to drive Zambia's industrial transformation through strategic investments, we believe that developing a globally skilled workforce is equally important. DALP is well positioned to support this objective by providing employees, graduates, and scholarship beneficiaries with access to internationally recognized qualifications in engineering, mining, agriculture, environmental sciences, finance, technology, business management, healthcare, and other priority sectors.</p>
+<p>We would welcome the opportunity to discuss how our services can complement IDC's initiatives through educational seminars, staff development opportunities, and international university partnerships that contribute to Zambia's long-term economic growth.</p>
+<p>We would be honoured to arrange a meeting at your convenience to explore possible areas of cooperation. Thank you for your time and consideration. We look forward to the opportunity of working together.</p>`
+            },
+            zim: {
+                recipient: 'Zambia Institute of Marketing\nPlot No. 163, Ibex Hill\nP.O Box 32180\nLusaka, Zambia',
+                subject: 'Proposal for a Strategic Partnership in Professional Development and International Education',
+                salutation: 'Dear Sir/Madam,',
+                body: `<p>I trust this letter finds you well.</p>
+<p>On behalf of DALP Consultancy Services, I am pleased to introduce our organization and express our interest in establishing a strategic partnership with the Zambia Institute of Marketing (ZIM) to promote professional development, international education, and lifelong learning among marketing professionals and aspiring graduates.</p>
+<p>For over 20 years, DALP Consultancy Services has remained one of Zambia's trusted international education consultancies, committed to transforming lives through access to quality education and global career opportunities. Our mission is to empower individuals with the knowledge, skills, and international exposure necessary to thrive in an increasingly competitive global economy while contributing meaningfully to Zambia's national development.</p>
+<p>Over the years, we have built strong partnerships with universities, colleges, and educational institutions across Australia, the United Kingdom, Canada, New Zealand, Europe, the United States, Asia, and other international destinations, enabling us to provide students and professionals with a wide range of study and career pathways.</p>
+<p>Our comprehensive services include:</p>
+<ul style="margin: 6px 0 12px 20px; padding: 0; line-height: 1.5;">
+<li>International education counselling and career guidance.</li>
+<li>University and college application processing.</li>
+<li>Undergraduate, postgraduate, diploma, and pathway programme placements.</li>
+<li>Student visa guidance and application processing.</li>
+<li>Visitor, business, and other eligible visa advisory services.</li>
+<li>IELTS registration and examination support.</li>
+<li>Course and university selection based on career aspirations.</li>
+<li>Accommodation and pre-departure support.</li>
+<li>Document verification and application preparation.</li>
+<li>Education exhibitions, university information sessions, and institutional engagement.</li>
+<li>Continuous support throughout the student's academic journey abroad.</li>
+</ul>
+<p>At DALP Consultancy Services, we are guided by values that define the quality of work and the confidence our clients place in us. These include professionalism, integrity, transparency, accountability, excellence, innovation, inclusiveness, and a strong commitment to delivering personalized services that place each client's aspirations at the centre of every decision we make.</p>
+<p>Our team understands that pursuing international education is one of the most significant investments an individual or family can make. For this reason, we strive to provide accurate information, ethical guidance, timely communication, and dependable support throughout every stage of the application process. Our commitment to accountability ensures that every client receives honest advice and responsible service founded on trust and professionalism.</p>
+<p>We recognize the Zambia Institute of Marketing as a respected professional body dedicated to advancing marketing excellence and developing competent professionals who contribute to Zambia's economic growth. We believe there is significant opportunity for collaboration through professional development seminars, international study opportunities, executive education programmes, postgraduate pathways, leadership training, educational exhibitions, and awareness campaigns that expose Zambian marketing professionals to globally recognized qualifications and emerging industry trends.</p>
+<p>We would be honoured to meet with your leadership team to present our services in greater detail and explore areas of mutual interest that will benefit ZIM members, graduates, and the wider business community.</p>
+<p>Thank you for your time and consideration. We look forward to the opportunity of building a productive and long-lasting partnership with the Zambia Institute of Marketing.</p>`
+            },
+            zanaco: {
+                recipient: 'Zambia National Commercial Bank Plc (Zanaco)\nHead Office\nP.O Box 33611\nCairo Road\nLusaka, Zambia',
+                subject: 'Collaboration to Enhance Financial Support for International Students',
+                salutation: 'Dear Sir/Madam,',
+                body: `<p>DALP Consultancy Services is pleased to present an opportunity for collaboration with Zambia National Commercial Bank in supporting students pursuing international education.</p>
+<p>Over the past twenty years, DALP has assisted students with university admissions, application processing, visa services, career counselling, accommodation arrangements, and other essential study abroad services.</p>
+<p>As increasing numbers of Zambian students pursue education overseas, the need for accessible financial services has become increasingly important. We believe that combining DALP's expertise in international education with Zanaco's extensive banking network would create a comprehensive support system for students and their families.</p>
+<p>Potential areas of collaboration include educational awareness campaigns, international tuition payment solutions, financial planning workshops, student banking services, and sponsorship initiatives that encourage academic excellence.</p>
+<p>We would greatly appreciate the opportunity to present these ideas and discuss possible avenues for cooperation.</p>
+<p>Thank you for your valuable time and consideration.</p>`
+            },
+            zccm: {
+                recipient: 'The Chief Executive Officer\nZCCM Investments Holdings Plc\nAlick Nkhata Road, Mass Media Complex\nP.O Box 30048\nLusaka, Zambia',
+                subject: 'Partnership Opportunity in International Education and Professional Development',
+                salutation: 'Dear Sir/Madam,',
+                body: `<p>Greetings from DALP Consultancy Services.</p>
+<p>DALP Consultancy Services has proudly served students, professionals, and institutions for more than two decades by providing comprehensive international education and immigration support. Our services include university placement, application processing, visa guidance, career counselling, IELTS registration, accommodation arrangements, and pre-departure orientation. We have established partnerships with leading universities across Australia, Canada, the United Kingdom, New Zealand, Europe, the United States, and other international destinations.</p>
+<p>The mining industry is rapidly evolving through technological innovation, sustainability initiatives, and environmental responsibility. These changes require professionals with internationally recognized knowledge and practical expertise.</p>
+<p>We believe there is significant value in collaborating with ZCCM Investments Holdings by creating pathways for employees, graduates, and young professionals to pursue specialized international education in mining engineering, geology, metallurgy, environmental management, occupational health and safety, business leadership, and emerging technologies.</p>
+<p>Beyond student recruitment, DALP seeks to become a long-term strategic partner that connects Zambian talent with world-class academic institutions capable of developing future industry leaders.</p>
+<p>We would appreciate an opportunity to present our services and discuss how we may support your organization's capacity-building objectives through customized educational partnerships.</p>
+<p>Thank you for your consideration. We look forward to hearing from you.</p>`
+            }
+        };
+
+function loadExecPreset(key) {
+            const preset = execLetterPresets[key];
+            if (!preset) return;
+
+            // Switch to Executive template if not already selected
+            const templateSelect = document.getElementById('template-select');
+            if (templateSelect && templateSelect.value !== 'executive') {
+                templateSelect.value = 'executive';
+                templateSelect.dispatchEvent(new Event('change'));
+            }
+
+            // Fill subject
+            const subjectField = document.getElementById('letter-subject');
+            if (subjectField) subjectField.value = preset.subject;
+
+            // Fill salutation
+            const salutationField = document.getElementById('letter-salutation');
+            if (salutationField) salutationField.value = preset.salutation;
+
+            // Fill body (rich editor)
+            const bodyEditor = document.getElementById('letter-body-editor');
+            if (bodyEditor) {
+                bodyEditor.innerHTML = preset.body;
+                bodyEditor.dispatchEvent(new Event('input'));
+            }
+
+            // Store recipient in a custom attribute for use in preview
+            // We load it as a single recipient by updating schools array
+            const recipientLines = preset.recipient.split('\n');
+            const institution = recipientLines[0] || '';
+            const location = recipientLines.slice(1).join(', ');
+
+            // Clear schools and add this single executive recipient
+            clearSchools();
+            addSchoolRow({ school: institution, city: location, contact: '', title: '' }, false);
+            selectSchoolPreview(0);
+
+            // Show feedback toast
+            if (typeof showToast === 'function') showToast(`✅ Loaded: ${institution}`, 2500);
+
+            updatePreview();
+        }
+
         function loadSampleData() {
+
             clearSchools();
             sampleSchools.forEach(s => addSchoolRow({...s}, false));
             selectSchoolPreview(0);
@@ -2976,16 +3383,99 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
                     </div>
                 </div>
                 `;
-            } else {
+            } else if (template === 'executive') {
+                const execSignatoryName = (document.getElementById('exec-signatory-name') && document.getElementById('exec-signatory-name').value.trim()) ? document.getElementById('exec-signatory-name').value.trim() : 'Daliso Nkhoma';
+                const execSignatoryPosition = (document.getElementById('exec-signatory-position') && document.getElementById('exec-signatory-position').value.trim()) ? document.getElementById('exec-signatory-position').value.trim() : 'Business Development Officer';
+
                 return `
                 <div class="letter-content-wrapper" style="--letter-font-family: ${currentLetterFont}; --letter-font-size: ${currentLetterFontSize}; font-family: ${currentLetterFont} !important;">
-                    <!-- Top Bar -->
-                    <div class="minimal-top-bar">
-                        <div class="minimal-top-navy"></div>
-                        <div class="minimal-top-blue"></div>
+                    <!-- Background Watermark (Executive only) -->
+                    <div class="letter-watermark"><img src="dalp-logo-transparent.png" alt=""></div>
+                    <!-- Top bar -->
+                    <div class="exact-top-bar">
+                        <div class="exact-top-navy"></div>
+                    </div>
+                    
+                    <!-- Header -->
+                    <div class="exact-header">
+                        <div class="exact-header-row">
+                            <div class="exact-brand">
+                                <img class="exact-logo" src="dalp-logo.jpg" alt="DALP Logo">
+                                <div class="exact-brand-text">
+                                    <h1>DALP CONSULTANCY</h1>
+                                    <div style="font-size: 8px; font-weight: 600; color: var(--print-blue); letter-spacing: 2.5px; font-family: 'Outfit', sans-serif;">EDUCATION BEYOND BORDERS</div>
+                                </div>
+                            </div>
+                            <div class="exact-contact">
+                                <div class="exact-contact-line"></div>
+                                <div class="exact-contact-text">
+                                    <p><strong>EDU-HUB, 2nd Floor</strong></p>
+                                    <p>Omelo Mumba Road, Rhodes Park</p>
+                                    <p>Lusaka, Zambia</p>
+                                    <p>+260 764 168 592 / +260 966 735 623</p>
+                                    <p>info@dalpzambia.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exact-sep">
+                            <div class="exact-sep-navy"></div>
+                            <div class="exact-sep-blue"></div>
+                        </div>
                     </div>
 
-                    <!-- Header -->
+                    <!-- Body -->
+                    <div class="exact-body">
+                        <div class="letter-recipient">${addressMarkup}</div>
+                        <div class="letter-date"><strong>Date:</strong> ${date}</div>
+                        <div class="letter-subject"><strong>${subject}</strong></div>
+                        <div class="letter-body-text">
+                            <p>${dynamicSalutation}</p>
+                            ${body}
+                        </div>
+
+                        <!-- Sign-off Block (Executive Authority Style) -->
+                        <div class="exec-sign-off-container" style="border-top: 1px solid #CBD5E1; padding-top: 10px; margin-top: 14px;">
+                            <div class="exec-authority-text" style="font-style: italic; color: #64748B; font-size: 11px; margin-bottom: 2px;">Issued with authority of:</div>
+                            <div class="exec-salutation-close" style="font-weight: 700; color: #0C2340; font-size: 12px; margin-bottom: 6px;">Yours faithfully,</div>
+                            
+                            <div class="exec-signatory-flex" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div class="exec-signatory-details">
+                                    ${includeSignature && currentSignatureDataURL ? `<div class="letter-sig-wrapper" style="margin: 2px 0 4px 0; position: relative; display: inline-block; user-select: none;"><img src="${currentSignatureDataURL}" id="movable-signature-img" style="max-height: ${sigHeight}px; height: ${sigHeight}px; width: auto; position: relative; left: ${sigOffsetX}px; top: ${sigOffsetY}px; cursor: move; user-select: none; -webkit-user-drag: none; vertical-align: middle;" onmousedown="startDragSignature(event)" ontouchstart="startDragSignature(event)" alt="Signature" title="Click and drag to move signature position"><div class="sig-resize-handle" onmousedown="startResizeSignature(event)" ontouchstart="startResizeSignature(event)" style="position: absolute; right: -8px; bottom: -8px; width: 14px; height: 14px; background-color: var(--accent-blue); border: 2px solid #ffffff; border-radius: 50%; cursor: se-resize; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" title="Drag to resize signature"></div></div><br>` : ''}
+                                    <div class="exec-signatory-name" style="font-weight: 700; color: #0C2340; font-size: 13px;">${execSignatoryName}</div>
+                                    <div class="exec-signatory-position" style="color: #475569; font-size: 11.5px;">${execSignatoryPosition}</div>
+                                    <div class="exec-company-name" style="font-weight: 800; color: #0093FB; font-size: 11px; margin-top: 2px; letter-spacing: 0.5px;">DALP CONSULTANCY SERVICES LIMITED</div>
+                                </div>
+
+                                <div class="exec-stamp-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                                    <img src="dalp-logo-transparent.png" alt="Official Stamp" style="max-height: 48px; max-width: 90px; width: auto; height: auto; object-fit: contain; filter: grayscale(100%) opacity(0.65);">
+                                    <div style="font-weight: 700; color: #64748B; font-size: 7.5px; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; font-family: 'Outfit', sans-serif;">OFFICIAL DOCUMENT</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="exact-footer">
+                        <div class="exact-footer-row">
+                            <div class="exact-footer-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C2340" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                <span>EDU-HUB, 2nd Floor, Omelo Mumba Road, Lusaka, Zambia</span>
+                            </div>
+                            <div class="exact-footer-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C2340" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                                <span>+260764168592 / +260966735623</span>
+                            </div>
+                            <div class="exact-footer-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C2340" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                <span><u>info@dalpzambia.com</u></span>
+                            </div>
+                        </div>
+                        <div class="exact-bottom-bar">
+                            <div class="exact-bottom-navy"></div>
+                </div>
+                `;
+            } else if (template === 'minimal') {
+                return `
                     <div class="minimal-header">
                         <div class="minimal-header-row">
                             <div class="minimal-brand">
@@ -3608,8 +4098,8 @@ document.fonts.ready.then(function() {
                     ${cssContent}
                     <style>
                         @page { size: A4 portrait; margin: 0; }
-                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; height: 100% !important; max-height: 297mm !important; }
-                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; height: 297mm !important; max-height: 297mm !important; overflow: hidden !important; page-break-after: avoid !important; }
+                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; height: auto !important; }
+                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; min-height: 297mm !important; height: auto !important; overflow: visible !important; }
                         .toast-notification, #toast-notification { display: none !important; }
                     </style>
                 </head>

@@ -175,6 +175,8 @@ function loadDatabase() {
                 'letter-salutation': '',
                 'sender-name': 'Dr. Patrick Nkhoma',
                 'sender-designation': 'Managing Director',
+                'exec-signatory-name': 'Daliso Nkhoma',
+                'exec-signatory-position': 'Business Development Officer',
                 'currentTemplate': 'exact',
                 'includeSignature': true,
                 'autoPersonalizeSalutation': true
