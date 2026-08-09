@@ -11,7 +11,7 @@ try {
 } catch (e) {
     try {
         puppeteer = require('../dalp-pdf-system/node_modules/puppeteer');
-    } catch (e2) {}
+    } catch (e2) { }
 }
 
 let browserInstance = null;
@@ -43,7 +43,7 @@ function getSystemChromiumPath() {
     return null;
 }
 
-function renderVectorPDFWithCLI(htmlPayload, cssStyles) {
+function renderVectorPDFWithCLI(htmlPayload, cssStyles, pageRanges = '1') {
     return new Promise((resolve, reject) => {
         const chromiumPath = getSystemChromiumPath();
         if (!chromiumPath) {
@@ -64,6 +64,7 @@ function renderVectorPDFWithCLI(htmlPayload, cssStyles) {
     <meta charset="utf-8">
     <base href="file:///${baseDir}">
     <title>DALP Letter PDF</title>
+    ${cssStyles}
     <style>
         @page { size: A4 portrait; margin: 0; }
         *, *::before, *::after {
@@ -75,43 +76,48 @@ function renderVectorPDFWithCLI(htmlPayload, cssStyles) {
             margin: 0 !important;
             padding: 0 !important;
             background: white !important;
-            width: 210mm;
-            min-height: 297mm;
+            width: 210mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
-        .letter-content-wrapper {
+        .letter-sheet, .letter-content-wrapper, .standalone-page, .print-page {
             box-shadow: none !important;
             margin: 0 auto !important;
             width: 210mm !important;
-            min-height: 297mm !important;
-            max-height: 297mm !important;
+            height: 296.5mm !important;
+            max-height: 296.5mm !important;
+            box-sizing: border-box !important;
             overflow: hidden !important;
-            page-break-after: avoid !important;
         }
     </style>
-    ${cssStyles}
 </head>
-<body>
-    ${htmlPayload}
-</body>
+<body>${(htmlPayload || '').trim()}</body>
 </html>`;
 
         fs.writeFileSync(tempHtmlPath, fullHTML, 'utf8');
 
-        execFile(chromiumPath, [
+        const cliArgs = [
             '--headless',
             '--disable-gpu',
             '--no-pdf-header-footer',
-            '--print-to-pdf=' + tempPdfPath,
-            tempHtmlPath
-        ], (err) => {
+            '--print-to-pdf=' + tempPdfPath
+        ];
+        if (pageRanges && pageRanges !== 'all') {
+            cliArgs.push(`--page-ranges=${pageRanges}`);
+        }
+        cliArgs.push(tempHtmlPath);
+
+        execFile(chromiumPath, cliArgs, (err) => {
             if (err || !fs.existsSync(tempPdfPath)) {
-                try { if (fs.existsSync(tempHtmlPath)) fs.unlinkSync(tempHtmlPath); } catch(e){}
+                try { if (fs.existsSync(tempHtmlPath)) fs.unlinkSync(tempHtmlPath); } catch (e) { }
                 return reject(err || new Error('Chromium CLI failed to output PDF file'));
             }
             try {
                 const pdfBuffer = fs.readFileSync(tempPdfPath);
-                try { fs.unlinkSync(tempHtmlPath); } catch(e){}
-                try { fs.unlinkSync(tempPdfPath); } catch(e){}
+                try { fs.unlinkSync(tempHtmlPath); } catch (e) { }
+                try { fs.unlinkSync(tempPdfPath); } catch (e) { }
                 resolve(pdfBuffer);
             } catch (readErr) {
                 reject(readErr);
@@ -156,12 +162,10 @@ const defaultPresetUniversities = [
     { "name": "Politecnico Di Milano", "address": "", "city": "Italy", "contact": "The Representative" },
     { "name": "Sunway University", "address": "", "city": "Malaysia", "contact": "The Representative" },
     { "name": "NABA", "address": "", "city": "Italy", "contact": "The Representative" },
-    { "name": "Webster University", "address": "", "city": "USA", "contact": "The Representative" },
     { "name": "St George's University", "address": "", "city": "Global", "contact": "The Representative" },
     { "name": "Adelaide University / Eynesbury College", "address": "", "city": "Australia", "contact": "Yetunde Adesope" },
     { "name": "University of South Australia / Eynesbury", "address": "", "city": "Australia", "contact": "Yetunde Adesope" },
     { "name": "Navitas Australia", "address": "", "city": "Australia", "contact": "Jodie Lindsay &Irina Mjomba" },
-    { "name": "C&N - CAIS Umbrella", "address": "", "city": "Australia", "contact": "The Representative" },
     { "name": "Navitas Canada", "address": "", "city": "Canada", "contact": "Linda Kwamboka Mokua & Gregory Pokorny" }
 ];
 
@@ -335,6 +339,7 @@ function handleRequest(req, res) {
     <meta charset="utf-8">
     <base href="file:///${baseDir}">
     <title>DALP Letter PDF</title>
+    ${cssStyles}
     <style>
         @page { size: A4 portrait; margin: 0; }
         *, *::before, *::after {
@@ -346,24 +351,24 @@ function handleRequest(req, res) {
             margin: 0 !important;
             padding: 0 !important;
             background: white !important;
-            width: 210mm;
-            min-height: 297mm;
+            width: 210mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
-        .letter-content-wrapper {
+        .letter-sheet, .letter-content-wrapper, .standalone-page, .print-page {
             box-shadow: none !important;
             margin: 0 auto !important;
             width: 210mm !important;
-            min-height: 297mm !important;
-            max-height: 297mm !important;
+            height: 296.5mm !important;
+            max-height: 296.5mm !important;
+            box-sizing: border-box !important;
             overflow: hidden !important;
-            page-break-after: avoid !important;
         }
     </style>
-    ${cssStyles}
 </head>
-<body>
-    ${body.html}
-</body>
+<body>${(body.html || '').trim()}</body>
 </html>`;
                     await page.setContent(fullHTML, { waitUntil: ['load', 'networkidle0'], timeout: 15000 });
                     pdfBuffer = await page.pdf({
@@ -382,7 +387,8 @@ function handleRequest(req, res) {
             // Strategy 2: System Chromium/Edge CLI fallback (ultra-fast 100% native vector PDF)
             if (!pdfBuffer) {
                 try {
-                    pdfBuffer = await renderVectorPDFWithCLI(body.html, cssStyles);
+                    const targetRanges = body.pageRanges || (body.singlePage === true ? '1' : 'all');
+                    pdfBuffer = await renderVectorPDFWithCLI(body.html, cssStyles, targetRanges);
                 } catch (cliErr) {
                     console.error("[Vector PDF Engine] Both Puppeteer and Chromium CLI failed:", cliErr);
                     return sendJSON(res, { success: false, message: cliErr.message }, 500);

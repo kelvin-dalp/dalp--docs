@@ -1,10 +1,12 @@
 {
   "presets": [
     {
-      "school": "The Chief Executive Officer",
-      "city": "ZCCM Investments Holdings Plc, Alick Nkhata Road, Mass Media Complex, P.O Box 30048, Lusaka, Zambia",
-      "contact": "",
-      "title": ""
+      "name": "Embassy of the Federal Republic of Germany",
+      "address": "5219 Haile Selassie Avenue",
+      "city": "Lusaka, Zambia",
+      "contact": "His Excellency the Ambassador",
+      "title": "",
+      "rawRecipient": "His Excellency the Ambassador\nEmbassy of the Federal Republic of Germany\n5219 Haile Selassie Avenue\nLusaka, Zambia"
     }
   ],
   "settings": {
@@ -15,13 +17,14 @@
     "sender-designation": "Managing Director",
     "currentTemplate": "executive",
     "includeSignature": true,
-    "letter-body": "<p>Greetings from DALP Consultancy Services.</p>\n<p>DALP Consultancy Services has proudly served students, professionals, and institutions for more than two decades by providing comprehensive international education and immigration support. Our services include university placement, application processing, visa guidance, career counselling, IELTS registration, accommodation arrangements, and pre-departure orientation. We have established partnerships with leading universities across Australia, Canada, the United Kingdom, New Zealand, Europe, the United States, and other international destinations.</p>\n<p>The mining industry is rapidly evolving through technological innovation, sustainability initiatives, and environmental responsibility. These changes require professionals with internationally recognized knowledge and practical expertise.</p>\n<p>We believe there is significant value in collaborating with ZCCM Investments Holdings by creating pathways for employees, graduates, and young professionals to pursue specialized international education in mining engineering, geology, metallurgy, environmental management, occupational health and safety, business leadership, and emerging technologies.</p>\n<p>Beyond student recruitment, DALP seeks to become a long-term strategic partner that connects Zambian talent with world-class academic institutions capable of developing future industry leaders.</p>\n<p>We would appreciate an opportunity to present our services and discuss how we may support your organization's capacity-building objectives through customized educational partnerships.</p>\n<p>Thank you for your consideration. We look forward to hearing from you.</p>",
+    "letter-body": "<p>On behalf of DALP Consultancy Services, I wish to convey our highest regards and to express our interest in establishing a collaborative relationship with the Embassy of the Federal Republic of Germany.</p>\n<p>For more than twenty years, DALP has been committed to helping students achieve their academic ambitions through professional education counselling, international university admissions, visa processing, and comprehensive study abroad support.</p>\n<p>Our work is guided by strong institutional values of accountability, integrity, transparency, professionalism, reliability, and ethical service delivery, which have earned us the trust of students, parents, and partner institutions over the years.</p>\n<p>DALP also upholds a deep commitment to excellence, student-centred service, and responsible guidance, ensuring that every applicant receives accurate information and fair access to global education opportunities. We take pride in maintaining high standards of due diligence and compliance, particularly in matters relating to international admissions and visa processes.</p>\n<p>Germany's reputation for academic excellence, engineering, scientific research, innovation, and affordable higher education makes it one of the most desirable destinations for ambitious students across Africa. We would be honoured to work alongside the Embassy in promoting educational opportunities available through German universities and related academic programmes.</p>\n<p>Our annual international education events attract students, parents, educators, and institutions from across Zambia, creating an ideal platform to showcase Germany's higher education sector.</p>\n<p>We would appreciate the opportunity to discuss possible areas of cooperation at your convenience.</p>\n<p>Please accept, Your Excellency, the assurances of our highest esteem.</p>",
     "autoPersonalizeSalutation": false,
     "currentPreviewIndex": 0,
     "letterFontFamily": "'Tinos', 'Times New Roman', Times, serif",
-    "letterFontSize": "14.5px",
+    "letterFontSize": "12.5px",
     "sigOffsetX": 0,
-    "sigOffsetY": 0
+    "sigOffsetY": 0,
+    "autoFitPageEnabled": false
   },
   "signature": {
     "dataUrl": "",

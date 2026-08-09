@@ -1,0 +1,1377 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><base href="file:///D:/Users/Kelvin/Downloads/DALP/doc/"><title>DALP Letter PDF</title><style>
+        /* CSS resets & dashboard theme variables */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #0093FB;
+            --accent-navy: #0c2340;
+            --border-dark: #475569;
+            --success: #10b981;
+            
+            /* Print colors */
+            --print-navy: #0C2340;
+            --print-blue: #0093FB;
+            --print-gray: #718096;
+            --print-line: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 500px;
+            height: 100vh;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header img {
+            height: 40px;
+            width: auto;
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-header h2 span {
+            color: var(--accent-blue);
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .sidebar-section {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            color: var(--text-light);
+            padding: 10px 14px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(0, 147, 251, 0.25);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        /* Template Chooser Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .template-card {
+            background-color: var(--bg-input);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .template-card:hover {
+            transform: translateY(-2px);
+            background-color: #3e4f66;
+        }
+
+        .template-card.active {
+            border-color: var(--accent-blue);
+            background-color: rgba(0, 147, 251, 0.1);
+        }
+
+        .template-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .template-card-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Schools Grid / Table Layout */
+        .schools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0078D4;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-input);
+            color: var(--text-light);
+            border: 1px solid var(--border-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .school-table-container {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            background-color: var(--bg-dark);
+        }
+
+        table.school-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        table.school-table th {
+            background-color: var(--bg-input);
+            padding: 8px 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        table.school-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-dark);
+            vertical-align: middle;
+        }
+
+        table.school-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.school-table input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        table.school-table input:focus {
+            outline: 2px solid var(--accent-blue);
+            border-radius: 2px;
+        }
+
+        .btn-action-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* Main Preview Window */
+        .preview-area {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .preview-header {
+            width: 210mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .preview-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Letter Sheet Simulation (A4 Page Ratio) */
+        .letter-sheet {
+            width: 210mm;
+            min-height: 297mm;
+            height: auto;
+            background-color: white;
+            color: #333333;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transform-origin: top center;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-sizing: border-box;
+            overflow: visible;
+        }
+
+        /* Layout specifically for high-fidelity offline PDF rendering */
+        .letter-print-container {
+            width: 210mm;
+            height: 297mm;
+            max-height: 297mm;
+            background-color: white;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Large Action Buttons */
+        .generate-panel {
+            padding: 24px;
+            margin-top: auto;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            background-color: var(--success);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-generate:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-generate:disabled {
+            background-color: var(--border-dark);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        :root {
+            --letter-font-family: 'Tinos', 'Times New Roman', Times, serif;
+            --letter-font-size: 11.5px;
+        }
+
+        /* ── TEMPLATES PRINT & PREVIEW STYLE DEFINITIONS ── */
+        .letter-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 297mm;
+            height: auto;
+            position: relative;
+            box-sizing: border-box;
+            background-color: white;
+            overflow: visible;
+            font-family: var(--letter-font-family) !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: optimizeLegibility !important;
+        }
+
+        /* Subtle DALP logo watermark for executive document background */
+        .letter-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .letter-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.012;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .letter-watermark img {
+            width: 340px;
+            max-width: 75%;
+            height: auto;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.12);
+            opacity: 0.12;
+        }
+
+        .letter-content-wrapper * {
+            font-family: var(--letter-font-family) !important;
+        }
+
+        .letter-content-wrapper img {
+            image-rendering: -webkit-optimize-contrast !important;
+            image-rendering: crisp-edges !important;
+        }
+
+        .letter-content-wrapper font[face],
+        .letter-content-wrapper [style*="font-family"],
+        .letter-body-text *,
+        .letter-body-text [style*="font-family"] {
+            font-family: var(--letter-font-family) !important;
+        }
+
+        /* --- TEMPLATE 1: EXACT --- */
+        .exact-top-bar {
+            width: 100%;
+            height: 10mm;
+            background-color: var(--print-blue);
+            display: flex;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .exact-top-navy {
+            width: 55%;
+            height: 100%;
+            background-color: var(--print-navy);
+            border-bottom-right-radius: 20px;
+        }
+        .exact-header {
+            padding: 8mm 17.6mm 0 17.6mm;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .exact-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 28mm;
+        }
+        .exact-brand {
+            display: flex;
+            align-items: center;
+            gap: 4.5mm;
+        }
+        .exact-logo {
+            width: 32mm;
+            height: 24mm;
+            object-fit: contain;
+        }
+        .exact-brand-text h1 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--print-navy);
+            letter-spacing: 1.5px;
+            line-height: 1.25;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exact-contact {
+            display: flex;
+            align-items: stretch;
+            gap: 4mm;
+            height: 20mm;
+        }
+        .exact-contact-line {
+            width: 2px;
+            background-color: var(--print-blue);
+        }
+        .exact-contact-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 10px;
+            color: #333;
+            line-height: 1.45;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exact-contact-text p {
+            margin: 0;
+        }
+        .exact-contact-text strong {
+            color: var(--print-navy);
+        }
+        .exact-sep {
+            width: 100%;
+            height: 2px;
+            display: flex;
+            margin-top: 5mm;
+        }
+        .exact-sep-navy {
+            width: 55%;
+            background-color: var(--print-navy);
+        }
+        .exact-sep-blue {
+            width: 45%;
+            background-color: var(--print-blue);
+        }
+        .exact-body {
+            flex: 1;
+            padding: 4mm 17.6mm 2mm 17.6mm;
+            font-size: var(--letter-font-size) !important;
+            line-height: var(--letter-line-height, 1.38);
+            color: #333333;
+            font-family: var(--letter-font-family) !important;
+            overflow: visible;
+            box-sizing: border-box;
+        }
+        .exact-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        .exact-footer-row {
+            padding: 0 17.6mm 6mm 17.6mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9.5px;
+            color: #333;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exact-footer-item {
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }
+        .exact-footer-item svg {
+            width: 13px;
+            height: 13px;
+            fill: var(--print-navy);
+        }
+        .exact-bottom-bar {
+            width: 100%;
+            height: 10mm;
+            background-color: var(--print-blue);
+            display: flex;
+            overflow: hidden;
+        }
+        .exact-bottom-navy {
+            width: 65%;
+            height: 100%;
+            background-color: var(--print-navy);
+            margin-left: auto;
+            border-top-left-radius: 20px;
+        }
+
+        /* --- TEMPLATE 2: MINIMALIST --- */
+        .minimal-top-bar {
+            width: 100%;
+            height: 4px;
+            display: flex;
+            flex-shrink: 0;
+        }
+        .minimal-top-navy {
+            width: 35%;
+            background-color: var(--print-navy);
+        }
+        .minimal-top-blue {
+            width: 65%;
+            background-color: var(--print-blue);
+        }
+        .minimal-header {
+            padding: 12mm 20mm 6mm 20mm;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .minimal-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 6mm;
+        }
+        .minimal-brand {
+            display: flex;
+            align-items: center;
+            gap: 5mm;
+        }
+        .minimal-logo {
+            width: 28mm;
+            height: 21mm;
+            object-fit: contain;
+        }
+        .minimal-brand-text {
+            border-left: 1.5px solid var(--line-color);
+            padding-left: 5mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .minimal-brand-text h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--print-navy);
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        .minimal-brand-subtitle {
+            margin: 1mm 0 0 0;
+            font-size: 8px;
+            font-weight: 600;
+            color: var(--print-blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .minimal-contact {
+            text-align: right;
+            font-size: 8.5px;
+            color: var(--print-gray);
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            font-family: var(--letter-font-family) !important;
+        }
+        .minimal-contact p {
+            margin: 0;
+        }
+        .minimal-contact span {
+            color: var(--print-navy);
+            font-weight: 600;
+        }
+        .minimal-contact a {
+            color: var(--print-navy);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--print-navy);
+        }
+        .minimal-sep {
+            width: 100%;
+            height: 1px;
+            background-color: var(--print-line);
+        }
+        .minimal-body {
+            flex: 1;
+            padding: 4mm 20mm 2mm 20mm;
+            font-size: var(--letter-font-size) !important;
+            line-height: 1.38;
+            color: #2D3748;
+            font-family: var(--letter-font-family) !important;
+            font-weight: 300;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .minimal-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 12mm;
+            gap: 4mm;
+            flex-shrink: 0;
+        }
+        .minimal-footer-line {
+            width: calc(100% - 40mm);
+            height: 1px;
+            background-color: var(--print-line);
+        }
+        .minimal-footer-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4mm;
+            font-size: 8px;
+            color: var(--print-gray);
+            letter-spacing: 0.5px;
+            font-family: var(--letter-font-family) !important;
+        }
+        .minimal-footer-bullet {
+            color: var(--print-blue);
+            font-size: 10px;
+        }
+        .minimal-footer-row a {
+            color: #1a202c;
+            text-decoration: none;
+        }
+        .minimal-decor {
+            display: flex;
+            gap: 4px;
+            width: 80px;
+            height: 3px;
+            margin-top: 2mm;
+        }
+        .minimal-decor-navy {
+            flex: 1;
+            background-color: var(--print-navy);
+            border-radius: 2px;
+        }
+        .minimal-decor-blue {
+            flex: 2;
+            background-color: var(--print-blue);
+            border-radius: 2px;
+        }
+
+        /* --- TEMPLATE 3: EXECUTIVE VIP --- */
+        .exec-top-bar {
+            width: 100%;
+            height: 6px;
+            display: flex;
+            flex-shrink: 0;
+        }
+        .exec-top-navy {
+            width: 50%;
+            background-color: var(--print-navy);
+        }
+        .exec-top-blue {
+            width: 50%;
+            background-color: var(--print-blue);
+        }
+        .exec-header {
+            padding: 10mm 18mm 4mm 18mm;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .exec-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4mm;
+            border-bottom: 2px solid var(--print-navy);
+        }
+        .exec-brand {
+            display: flex;
+            align-items: center;
+            gap: 5mm;
+        }
+        .exec-logo {
+            width: 32mm;
+            height: 24mm;
+            object-fit: contain;
+        }
+        .exec-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .exec-brand-text h1 {
+            margin: 0;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--print-navy);
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+        .exec-brand-subtitle {
+            margin: 1.5mm 0 0 0;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--print-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .exec-contact {
+            text-align: right;
+            font-size: 8.5px;
+            color: #4A5568;
+            line-height: 1.5;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-body {
+            flex: 1 0 auto;
+            padding: 5mm 18mm 4mm 18mm;
+            font-size: var(--letter-font-size) !important;
+            line-height: var(--letter-line-height, 1.42);
+            color: #1A202C;
+            font-family: var(--letter-font-family) !important;
+            overflow: visible !important;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .exec-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        .exec-footer-row {
+            padding: 2mm 18mm 4mm 18mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.5px;
+            color: #718096;
+            font-family: var(--letter-font-family) !important;
+            border-top: 1px solid var(--print-line);
+        }
+
+        /* Executive Authority Sign-off Block (Matching User Image) */
+        .exec-sign-off-container {
+            margin-top: 4mm;
+            padding-top: 3mm;
+            border-top: 1px solid #CBD5E1;
+            width: 100%;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        .exec-authority-text {
+            font-style: italic;
+            font-size: 11px;
+            color: #64748B;
+            margin-bottom: 2mm;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-salutation-close {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--print-navy);
+            margin-bottom: 6mm;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-signatory-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+        }
+        .exec-signatory-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5mm;
+        }
+        .exec-signatory-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--print-navy);
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-signatory-position {
+            font-size: 12px;
+            font-weight: 400;
+            color: #64748B;
+            font-family: var(--letter-font-family) !important;
+        }
+        .exec-company-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--print-blue);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Outfit', sans-serif;
+            margin-top: 1mm;
+        }
+        .exec-stamp-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5mm;
+        }
+        .exec-stamp-svg {
+            width: 54px;
+            height: 54px;
+            opacity: 0.85;
+        }
+        .exec-stamp-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94A3B8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Shared Letter Body formatting */
+        .letter-recipient {
+            margin-top: 3mm;
+            margin-bottom: 5mm;
+            line-height: 1.35;
+        }
+        .letter-date {
+            margin-bottom: 4mm;
+        }
+        .letter-subject {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5mm;
+            text-decoration: underline;
+        }
+        .letter-body-text {
+            margin-bottom: 6mm;
+            white-space: normal;
+        }
+        .letter-body-text p {
+            margin-bottom: 1.2em;
+            margin-top: 0;
+            line-height: 1.5;
+        }
+        .letter-body-text ul, .letter-body-text ol {
+            padding-left: 6mm;
+            margin-bottom: 1.2em;
+            margin-top: 0;
+        }
+        .letter-body-text li {
+            margin-bottom: 0.4em;
+        }
+        .letter-body-text a {
+            color: var(--print-blue);
+            text-decoration: underline;
+        }
+        .letter-signature {
+            line-height: 1.3;
+        }
+
+        /* ── Bulk CSV paste container ── */
+        .csv-textarea {
+            width: 100%;
+            height: 100px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 11px;
+            font-family: monospace;
+            margin-top: 10px;
+            resize: none;
+        }
+
+        .paste-panel-toggle {
+            display: block;
+            font-size: 11px;
+            color: var(--accent-blue);
+            cursor: pointer;
+            margin-top: 6px;
+            text-decoration: underline;
+        }
+
+        .paste-panel {
+            display: none;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-dark);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        /* Print Container Rules */
+        #print-area {
+            display: none;
+        }
+
+        /* Force all background colors and images to print */
+        .letter-content-wrapper,
+        .letter-content-wrapper *,
+        .exact-top-bar, .exact-top-navy,
+        .exact-sep-navy, .exact-sep-blue,
+        .exact-contact-line,
+        .exact-bottom-bar, .exact-bottom-navy,
+        .minimal-top-bar, .minimal-top-navy, .minimal-top-blue,
+        .minimal-sep, .minimal-footer-line,
+        .minimal-decor-navy, .minimal-decor-blue,
+        .print-page, .letter-sheet {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* Download button in table */
+        .btn-dl-single {
+            padding: 2px 6px;
+            font-size: 10px;
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 4px;
+        }
+        .btn-dl-single:hover {
+            background-color: #0078D4;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            .sig-resize-handle {
+                display: none !important;
+            }
+            html, body {
+                background: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            .sidebar, .preview-area, .toast-notification, #toast-notification {
+                display: none !important;
+            }
+            #print-area {
+                display: block !important;
+                width: 210mm !important;
+                margin: 0 auto !important;
+            }
+            .print-page, .letter-sheet, .letter-content-wrapper, .standalone-page {
+                width: 210mm !important;
+                max-height: 296.5mm !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                page-break-after: auto !important;
+                break-after: auto !important;
+                background-color: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .print-page + .print-page,
+            .letter-sheet + .letter-sheet,
+            .letter-content-wrapper + .letter-content-wrapper,
+            .standalone-page + .standalone-page {
+                page-break-before: always !important;
+                break-before: always !important;
+            }
+            .print-page:last-child,
+            .letter-sheet:last-child,
+            .letter-content-wrapper:last-child,
+            .standalone-page:last-child,
+            body > :last-child {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+            /* Ensure all colored elements print backgrounds */
+            .letter-content-wrapper,
+            .letter-content-wrapper * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    
+        table.school-table tr.active-school-row {
+            background-color: rgba(0, 147, 251, 0.18) !important;
+            border-left: 4px solid var(--accent-blue);
+        }
+        table.school-table tr {
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        table.school-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+    
+        /* Persistent Storage & E-Signature Styles */
+        .btn-save-presets {
+            background-color: #28a745 !important;
+            color: white !important;
+            border: none;
+        }
+        .btn-save-presets:hover {
+            background-color: #218838 !important;
+        }
+        .btn-reset-presets {
+            background-color: #6c757d !important;
+            color: white !important;
+            border: none;
+        }
+        .btn-reset-presets:hover {
+            background-color: #5a6268 !important;
+        }
+
+        .signature-container {
+            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .signature-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            background: #ffffff;
+            border: 1.5px dashed var(--accent-blue);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            overflow: hidden;
+        }
+        #signature-canvas {
+            display: block;
+            width: 100%;
+            height: 90px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .signature-actions {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .signature-actions button, .signature-actions label {
+            flex: 1;
+            font-size: 10.5px;
+            padding: 5px 4px;
+        }
+        .signature-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+        .signature-status.has-sig {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0C2340;
+            color: #ffffff;
+            border-left: 4px solid var(--accent-blue);
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Rich Text Editor Styling */
+        .rich-editor-container {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            background-color: var(--bg-dark);
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .rich-editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 6px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-dark);
+            align-items: center;
+        }
+        .toolbar-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            transition: background 0.2s, color 0.2s;
+            font-family: inherit;
+        }
+        .toolbar-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .toolbar-btn.active {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+        .toolbar-separator {
+            width: 1px;
+            height: 18px;
+            background-color: var(--border-dark);
+            margin: 0 4px;
+        }
+        .rich-editor-content {
+            width: 100%;
+            min-height: 180px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: var(--bg-input);
+            border: none !important;
+            border-radius: 0;
+            color: var(--text-light);
+            padding: 10px 14px;
+            font-size: 14px;
+            line-height: 1.5;
+            outline: none !important;
+            box-shadow: none !important;
+            word-break: break-word;
+            text-align: left;
+        }
+        .rich-editor-content p {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+        .rich-editor-content ul, .rich-editor-content ol {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+        .rich-editor-content li {
+            margin-bottom: 4px;
+        }
+        .rich-editor-content a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        body.pdf-exporting .sidebar,
+        body.pdf-exporting .preview-area,
+        body.pdf-exporting #print-area {
+            display: none !important;
+        }
+
+</style>
+<style> content from current page
+            const styleSheets = Array.from(document.querySelectorAll('style'));
+            let allCSS = styleSheets.map(s => s.innerHTML).join('\n');
+
+            return `<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>DALP Invitation - ${school.name || 'Letter'}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+${allCSS}
+:root {
+    --letter-font-family: ${currentLetterFont} !important;
+    --letter-font-size: ${currentLetterFontSize} !important;
+}
+.letter-content-wrapper, .letter-content-wrapper * {
+    font-family: ${currentLetterFont} !important;
+}
+/* Override for standalone print page */
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
+html, body {
+    background: white !important;
+    color: #333 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+}
+.sidebar, .preview-area, #print-area, .toast-notification, #toast-notification { display: none !important; }
+.standalone-page {
+    width: 210mm;
+    min-height: 297mm;
+    height: auto;
+    overflow: visible;
+    margin: 0 auto;
+    background: white;
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+.standalone-page * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+@media print {
+    @page { size: A4 portrait; margin: 0; }
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+    .standalone-page {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+}
+</style>
+<style>
+                        @page { size: A4 portrait; margin: 0; }
+                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; height: auto !important; }
+                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; min-height: 297mm !important; height: auto !important; overflow: visible !important; }
+                        .toast-notification, #toast-notification { display: none !important; }
+                    </style><style>@page { size: A4 portrait; margin: 0; } html, body { margin: 0 !important; padding: 0 !important; background: white !important; width: 210mm !important; max-height: 295mm !important; overflow: hidden !important; font-size: 0 !important; line-height: 0 !important; } *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; } .letter-sheet, .letter-content-wrapper, .standalone-page, .print-page { box-shadow: none !important; margin: 0 auto !important; width: 210mm !important; max-height: 295mm !important; box-sizing: border-box !important; overflow: hidden !important; page-break-after: avoid !important; break-after: avoid !important; } body > :last-child { page-break-after: avoid !important; break-after: avoid !important; }</style></head><body><div class="letter-content-wrapper" style="--letter-font-family: 'Tinos', 'Times New Roman', serif; --letter-font-size: 11.5px;">
+    <div class="letter-watermark"><img src="dalp-logo-transparent.png" alt=""></div>
+    <div class="exact-top-bar"><div class="exact-top-navy"></div></div>
+    <div class="exact-header">
+        <div class="exact-header-row">
+            <div class="exact-brand">
+                <img class="exact-logo" src="dalp-logo.jpg" alt="DALP Logo">
+                <div class="exact-brand-text">
+                    <h1>DALP CONSULTANCY</h1>
+                    <div style="font-size: 8px; font-weight: 600; color: #0093FB; letter-spacing: 2.5px;">EDUCATION BEYOND BORDERS</div>
+                </div>
+            </div>
+            <div class="exact-contact">
+                <div class="exact-contact-text">
+                    <p><strong>EDU-HUB, 2nd Floor</strong></p>
+                    <p>Omelo Mumba Road, Rhodes Park</p>
+                    <p>Lusaka, Zambia</p>
+                    <p>+260 764 168 592 / +260 966 735 623</p>
+                    <p>info@dalpzambia.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="exec-body" style="padding: 18mm;">
+        <div class="letter-recipient"><p><strong>The Managing Director</strong><br>ZCCM Investments Holdings Plc<br>Lusaka, Zambia</p></div>
+        <div class="letter-date"><strong>Date:</strong> 28 August 2026</div>
+        <div class="letter-subject"><strong>STRATEGIC PARTNERSHIP INVITATION FOR EXECUTIVE HUMAN CAPITAL DEVELOPMENT</strong></div>
+        <div class="letter-body-text">
+            <p>Dear Sir/Madam,</p>
+            <p>We recognize ZCCM Investments Holdings Plc as a premier investment holding company with major investments in Zambia's mining and strategic sectors. As part of our mandate to expand access to world-class education, DALP Consultancy Services Limited invites ZCCM-IH to collaborate with us for the upcoming 2026 DALP Education Fair.</p>
+            <p>Through this partnership, employees, dependents, and sponsored scholars of ZCCM-IH will gain direct access to over 38 top-ranked international universities across Australia, Canada, the United Kingdom, Switzerland, Germany, and Malaysia. Programs range from undergraduate pathways to specialized postgraduate executive training in Mining Engineering, Sustainable Energy Management, Financial Leadership, and ESG Compliance.</p>
+            <p>We would welcome an opportunity to meet with your Human Capital team to outline specific scholarship allocation and executive development opportunities tailored for ZCCM-IH staff and partners.</p>
+            <p>We look forward to your positive response.</p>
+        </div>
+        <div class="exec-sign-off-container" style="border-top: 1px solid #CBD5E1; padding-top: 10px; margin-top: 14px;">
+            <div class="exec-authority-text" style="font-style: italic; color: #64748B; font-size: 11px; margin-bottom: 2px;">Issued with authority of:</div>
+            <div class="exec-salutation-close" style="font-weight: 700; color: #0C2340; font-size: 12px; margin-bottom: 6px;">Yours faithfully,</div>
+            <div class="exec-signatory-flex" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div class="exec-signatory-details">
+                    <div class="exec-signature-space" style="height: 48px; margin: 4px 0;"></div>
+                    <div class="exec-signatory-name" style="font-weight: 700; color: #0C2340; font-size: 13px;">Daliso Nkhoma</div>
+                    <div class="exec-signatory-position" style="color: #475569; font-size: 11.5px;">Business Development Officer</div>
+                    <div class="exec-company-name" style="font-weight: 800; color: #0093FB; font-size: 11px; margin-top: 2px;">DALP CONSULTANCY SERVICES LIMITED</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></body></html>
