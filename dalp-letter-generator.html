@@ -1963,84 +1963,102 @@ We look forward to welcoming your pupils and staff to what promises to be an inf
     <script>
         // ==================== DATABASE CLIENT LAYER ====================
         const DALPDatabase = {
-            async loadPresets() {
+            _readLocal(key, fallback = null) {
                 try {
-                    const response = await fetch('/api/presets');
-                    const data = await response.json();
-                    return data.success ? data.presets : null;
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : fallback;
                 } catch (err) {
-                    console.error("Error loading presets:", err);
+                    return fallback;
+                }
+            },
+            _writeLocal(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (err) {
+                    console.warn("localStorage write skipped:", err);
+                }
+            },
+            async _fetchApiJson(url, options) {
+                try {
+                    const response = await fetch(url, options);
+                    const contentType = response.headers.get('content-type') || '';
+                    if (!response.ok || !contentType.includes('application/json')) {
+                        return null;
+                    }
+                    return await response.json();
+                } catch (err) {
                     return null;
                 }
             },
+            async loadPresets() {
+                const data = await this._fetchApiJson('/api/presets');
+                if (data && data.success && Array.isArray(data.presets)) {
+                    return data.presets;
+                }
+                return this._readLocal('dalp_saved_schools', null);
+            },
             async savePresets(presets) {
-                const response = await fetch('/api/presets', {
+                this._writeLocal('dalp_saved_schools', presets);
+                const data = await this._fetchApiJson('/api/presets', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ presets })
                 });
-                return await response.json();
+                return data || { success: true, storage: 'local' };
             },
             async resetPresets() {
-                const response = await fetch('/api/presets/reset', {
+                const data = await this._fetchApiJson('/api/presets/reset', {
                     method: 'POST'
                 });
-                const data = await response.json();
-                return data.success ? data.presets : null;
+                if (data && data.success && Array.isArray(data.presets)) {
+                    this._writeLocal('dalp_saved_schools', data.presets);
+                    return data.presets;
+                }
+                const clonedDefaults = presetUniversities.map(item => ({ ...item }));
+                this._writeLocal('dalp_saved_schools', clonedDefaults);
+                return clonedDefaults;
             },
             async loadSettings() {
-                try {
-                    const response = await fetch('/api/settings');
-                    const data = await response.json();
-                    return data.success ? data.settings : null;
-                } catch (err) {
-                    console.error("Error loading settings:", err);
-                    return null;
+                const data = await this._fetchApiJson('/api/settings');
+                if (data && data.success && data.settings) {
+                    return data.settings;
                 }
+                return this._readLocal('dalp_saved_settings', {});
             },
             async saveSetting(key, value) {
-                try {
-                    const response = await fetch('/api/settings', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ key, value })
-                    });
-                    return await response.json();
-                } catch (err) {
-                    console.error("Error saving setting:", err);
-                }
+                const currentSettings = this._readLocal('dalp_saved_settings', {});
+                currentSettings[key] = value;
+                this._writeLocal('dalp_saved_settings', currentSettings);
+                const data = await this._fetchApiJson('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key, value })
+                });
+                return data || { success: true, storage: 'local' };
             },
             async loadSignature() {
-                try {
-                    const response = await fetch('/api/signature');
-                    const data = await response.json();
-                    return data.success ? data.signature : null;
-                } catch (err) {
-                    console.error("Error loading signature:", err);
-                    return null;
+                const data = await this._fetchApiJson('/api/signature');
+                if (data && data.success && data.signature) {
+                    return data.signature;
                 }
+                return this._readLocal('dalp_saved_signature', null);
             },
             async saveSignature(sigData) {
-                try {
-                    const response = await fetch('/api/signature', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(sigData)
-                    });
-                    return await response.json();
-                } catch (err) {
-                    console.error("Error saving signature:", err);
-                }
+                const existing = this._readLocal('dalp_saved_signature', {});
+                this._writeLocal('dalp_saved_signature', { ...existing, ...sigData });
+                const data = await this._fetchApiJson('/api/signature', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sigData)
+                });
+                return data || { success: true, storage: 'local' };
             },
             async clearSignature() {
-                try {
-                    const response = await fetch('/api/signature', {
-                        method: 'DELETE'
-                    });
-                    return await response.json();
-                } catch (err) {
-                    console.error("Error clearing signature:", err);
-                }
+                this._writeLocal('dalp_saved_signature', { dataUrl: '', height: 65, offsetX: 0, offsetY: 0 });
+                const data = await this._fetchApiJson('/api/signature', {
+                    method: 'DELETE'
+                });
+                return data || { success: true, storage: 'local' };
             }
         };
 
