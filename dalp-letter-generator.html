@@ -708,6 +708,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: auto;
             padding-bottom: 12mm;
             gap: 4mm;
             flex-shrink: 0;
@@ -1118,11 +1119,13 @@
             .letter-sheet,
             .letter-content-wrapper,
             .standalone-page {
-                width: 100% !important;
-                height: 100% !important;
-                max-height: 100% !important;
-                margin: 0 !important;
+                width: 210mm !important;
+                height: 296.5mm !important;
+                min-height: 296.5mm !important;
+                max-height: 296.5mm !important;
+                margin: 0 auto !important;
                 padding: 0 !important;
+                box-shadow: none !important;
                 box-sizing: border-box !important;
                 overflow: hidden !important;
                 background-color: white !important;
@@ -1364,6 +1367,11 @@
         body.pdf-exporting .preview-area,
         body.pdf-exporting #print-area {
             display: none !important;
+        }
+
+        .pdf-export-container .letter-sheet,
+        .pdf-export-container .letter-content-wrapper {
+            box-shadow: none !important;
         }
     </style>
 </head>
@@ -4261,14 +4269,22 @@ html, body {
 .sidebar, .preview-area, #print-area, .toast-notification, #toast-notification { display: none !important; }
 .standalone-page {
     width: 210mm !important;
-    height: 297mm !important;
-    max-height: 297mm !important;
+    height: 296.5mm !important;
+    min-height: 296.5mm !important;
+    max-height: 296.5mm !important;
     overflow: hidden !important;
     margin: 0 auto;
     background: white;
+    box-shadow: none !important;
     box-sizing: border-box;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+}
+.standalone-page .letter-content-wrapper {
+    box-shadow: none !important;
+    height: 296.5mm !important;
+    min-height: 296.5mm !important;
+    max-height: 296.5mm !important;
 }
 .standalone-page * {
     -webkit-print-color-adjust: exact !important;
@@ -4279,15 +4295,20 @@ html, body {
     html, body {
         margin: 0 !important;
         padding: 0 !important;
+        width: 210mm !important;
         height: auto !important;
         overflow: visible !important;
+        background: white !important;
     }
-    .standalone-page {
-        width: 100% !important;
-        height: 100% !important;
-        max-height: 100% !important;
-        margin: 0 !important;
+    .standalone-page,
+    .standalone-page .letter-content-wrapper {
+        width: 210mm !important;
+        height: 296.5mm !important;
+        min-height: 296.5mm !important;
+        max-height: 296.5mm !important;
+        margin: 0 auto !important;
         padding: 0 !important;
+        box-shadow: none !important;
         overflow: hidden !important;
     }
 }
@@ -4656,9 +4677,13 @@ document.fonts.ready.then(function() {
                     ${cssContent}
                     <style>
                         @page { size: A4 portrait; margin: 0; }
-                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; height: 297mm !important; max-height: 297mm !important; }
-                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; height: 297mm !important; max-height: 297mm !important; overflow: hidden !important; }
+                        html, body { background: white !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; width: 210mm !important; height: auto !important; }
+                        .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; width: 210mm !important; height: 296.5mm !important; min-height: 296.5mm !important; max-height: 296.5mm !important; overflow: hidden !important; }
                         .toast-notification, #toast-notification { display: none !important; }
+                        @media print {
+                            html, body { background: white !important; margin: 0 !important; padding: 0 !important; width: 210mm !important; height: auto !important; }
+                            .letter-content-wrapper { box-shadow: none !important; margin: 0 auto !important; width: 210mm !important; height: 296.5mm !important; min-height: 296.5mm !important; max-height: 296.5mm !important; overflow: hidden !important; }
+                        }
                     </style>
                 </head>
                 <body onload="window.print(); setTimeout(function(){ window.close(); }, 500);">
